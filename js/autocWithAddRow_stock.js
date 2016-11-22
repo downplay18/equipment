@@ -14,14 +14,15 @@ $(".addmore").on('click', function () {
     count = $('table tr').length;
 
     var data = "<tr><td><input type='checkbox' class='case'/></td><td><span id='snum" + i + "'>" + count + ".</span></td>";
-    data += "<td><input class='form-control' type='text' id='varDetail_" + i + "' name='varDetail[]' maxlength=\"100\" required/></td> \n\
-<td><input class='form-control' type='text' id='var_slipSuffix_" + i + "' name='var_slipSuffix[]' required/></td> \n\
-<td><input class='form-control' type='number' id='var_qty_" + i + "' name='var_qty[]' required/></td> \n\
-<td bgcolor='#ffffe6'><input class='form-control' type='text' id='var_lastSuffix_" + i + "' name='var_lastSuffix[]' required readonly/></td>\n\
-<td bgcolor='#ffffe6'><input class='form-control' type='number' id='var_lastQty_" + i + "' name='var_lastQty[]' required/></td></tr>";
+    data += "<td><input class='form-control' type='text' id='varZDIR_" + i + "' name='varZDIR[]' required/></td>\n\
+<td><input class='form-control' type='text' id='varDetail_" + i + "' name='varDetail[]' maxlength=\"100\" required readonly/></td> \n\
+<td><input class='form-control' type='text' id='varSlipSuffix_" + i + "' name='varSlipSuffix[]' required readonly/></td> \n\
+<td><input class='form-control' type='number' id='varQty_" + i + "' name='varQty[]' required/></td> \n\
+<td bgcolor='#ffffe6'><input class='form-control' type='text' id='varLastSuffix_" + i + "' name='varLastSuffix[]' required readonly/></td>\n\
+<td bgcolor='#ffffe6'><input class='form-control' type='number' id='varLastQty_" + i + "' name='varLastQty[]' required/></td></tr>";
     $('table').append(data);
-    //row = i;
-    $('#varDetail_' + i).autocomplete({
+    row = i;
+    $('#varZDIR_' + i).autocomplete({
         source: function (request, response) {
             $.ajax({
                 url: 'add_autoc_ajax_stock.php',
@@ -30,7 +31,7 @@ $(".addmore").on('click', function () {
                 data: {
                     name_startsWith: request.term,
                     type: 'item_table',
-                    row_num: i
+                    row_num: row
                 },
                 success: function (data) {
                     response($.map(data, function (item) {
@@ -50,7 +51,10 @@ $(".addmore").on('click', function () {
             var names = ui.item.data.split("|");
             id_arr = $(this).attr('id');
             id = id_arr.split("_");
-            $('#var_lastSuffix_' + id[1]).val(names[1]);
+            $('#varDetail_' + id[1]).val(names[1]);
+            $('#varSlipSuffix_' + id[1]).val(names[2]);
+            $('#varLastSuffix_' + id[1]).val(names[3]);
+            $('#varLastQty_' + id[1]).val(names[4]);
         }
     });
     i++;
@@ -74,7 +78,7 @@ function check() {
     });
 }
 
-$('#varDetail_1').autocomplete({
+$('#varZDIR_1').autocomplete({
     source: function (request, response) {
         $.ajax({
             url: 'add_autoc_ajax_stock.php',
@@ -101,6 +105,9 @@ $('#varDetail_1').autocomplete({
     minLength: 0,
     select: function (event, ui) {
         var names = ui.item.data.split("|");
-        $('#var_lastSuffix_1').val(names[1]);
+        $('#varDetail_1').val(names[1]);
+        $('#varSlipSuffix_1').val(names[2]);
+        $('#varLastSuffix_1').val(names[3]);
+        $('#varLastQty_1').val(names[4]);
     }
 });
