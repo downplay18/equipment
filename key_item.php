@@ -14,19 +14,40 @@ $keyMsg = array();
 ?>
 
 <?php
+if (isset($_POST['newSubmitBtn'])) {
+    $newKeyCheckQS = "SELECT `key_detail` FROM `key_item` WHERE `key_detail`='" . $_POST['newKeyDetail'] . "'";
+    $newKeyCheckQry = mysqli_query($connection, $newKeyCheckQS) or die(mysqli_error($connection));
+    $duplicateRow = mysqli_num_rows($newKeyCheckQry);
+    if ($duplicateRow) { //เจอซํ้า แจ้งข้อความเตือน
+        array_push($keyMsg, "<p style='font-size:1.5em;color:red;'>ชื่อซํ้า!&nbsp;&nbsp;<u>" . $_POST['newKeyItem'] . "</u>&nbsp;&nbsp;มีอยู่แล้วในฐานข้อมูล!<br/>ไม่มีการเปลี่ยนแปลงเกิดขึ้น...</p>");
+    } else { //ไม่เจอซํ้า เพิ่มเข้าไปใน :key_item
+        $newKeyQS = "INSERT INTO key_item (key_code, key_detail, slip_suffix, last_suffix, last_xqty)
+            VALUES ('" . $_POST['newKeyCode'] . "', '" . $_POST['newKeyItem'] . "', '" . $_POST['newKeySuffix'] . "', '" . $_POST['newLastSuffix'] . "', '" . $_POST['newLastxQty'] . "');";
+        $newKeyQry = mysqli_query($connection, $newKeyQS);
+        if ($newKeyQry) {
+            array_push($keyMsg, "<p style='font-size:1.25em;color:blue;'>เพิ่มรายชื่อ <u>" . $_POST['newKeyItem'] . "</u> ในรายชื่อกลางสำเร็จ!<br/>สามารถเรียกใช้งานในหน้าเพิ่มใบเสร็จได้ทันที!</p>");
+        } else {
+            array_push($keyMsg, "<p style='font-size:1.5em;color:red;'>ผิดพลาด! ไม่สามารถเพิ่ม<u>" . $_POST['newKeyDetail'] . "</u><br/>โปรดติดต่อผู้ดูแลระบบ!</p>");
+        }
+    }
+}
+
+
+
+
 if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
     //คิวรี่เช็คว่ามันซํ้าในdbหรือเปล่า
-    $nkCheckQry = mysqli_query($connection, "SELECT `key_detail` FROM `key_item` WHERE `key_detail`='" . $_POST['newKeyItem'] . "'"
-            ) or die(mysqli_error($connection));
+//    $nkCheckQry = mysqli_query($connection, "SELECT `key_detail` FROM `key_item` WHERE `key_detail`='" . $_POST['newKeyItem'] . "'"
+//            ) or die(mysqli_error($connection));
     $num_rows = mysqli_num_rows($nkCheckQry);
-    
+
     if ($num_rows) { //เช็คแล้วเจอซํ้า
         array_push($keyMsg, "<p style='font-size:1.5em;color:red;'>ชื่อซํ้า!&nbsp;&nbsp;<u>" . $_POST['newKeyItem'] . "</u>&nbsp;&nbsp;มีอยู่แล้วในฐานข้อมูล!<br/>ไม่มีการเปลี่ยนแปลงเกิดขึ้น...</p>");
     } else { //ไม่เจอซํ้า เพิ่มเข้าไปใน :key_item
-        $keyItemAddQry = mysqli_query($connection, 
-                "INSERT INTO `key_item` (`key_detail`,`key_suffix`,`divisionID`)"
-                . " VALUES ('" . $_POST['newKeyItem'] . "','" . $_POST['newKeySuffix'] . "','" . $_SESSION['div_id'] . "')");
-        array_push($keyMsg, "<p style='font-size:1.25em;color:blue;'>เพิ่มรายชื่อ <u>" . $_POST['newKeyItem'] . "</u> ในรายชื่อกลางสำเร็จ!<br/>สามารถเรีนกใช้งานในหน้าเพิ่มใบเสร็จได้ทันที!</p>");
+//        $keyItemAddQry = mysqli_query($connection, 
+//                "INSERT INTO `key_item` (`key_detail`,`key_suffix`,`divisionID`)"
+//                . " VALUES ('" . $_POST['newKeyItem'] . "','" . $_POST['newKeySuffix'] . "','" . $_SESSION['div_id'] . "')");
+        array_push($keyMsg, "<p style='font-size:1.25em;color:blue;'>เพิ่มรายชื่อ <u>" . $_POST['newKeyItem'] . "</u> ในรายชื่อกลางสำเร็จ!<br/>สามารถเรียกใช้งานในหน้าเพิ่มใบเสร็จได้ทันที!</p>");
     }
 }
 ?>
@@ -43,11 +64,11 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
     <body>
         <?php
         include 'navbar.php';
-        
+
         echo 'SESSION = ';
         print_r($_SESSION);
         echo '<br/>POST = <br/>';
-        print_r($_POST); 
+        print_r($_POST);
         ?>
 
         <div class="row">
@@ -74,7 +95,7 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
                     <div class="row">
 
                         <!-- เพิ่มชื่อเครื่องมือเครื่องใช้ -->
-                        <div class="col-md-6 col-md-offset-3">
+                        <div class="col-md-12">
                             <div class="alert alert-warning">
 
                                 <form id="mainForm" action="" method="post">
@@ -88,28 +109,45 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
                                     unset($_POST['newKeyItem']);
                                     echo "</center>";
                                     ?>
-                                    
-                                    <div class="col-md-9">
-                                        <input id="keyItem" class="form-control" type="text"  name="newKeyItem" placeholder="ชื่อเครื่องมือเครื่องใช้ใหม่ที่ต้องการเพิ่ม" maxlength="100" autocomplete="off" required/>
+
+
+                                    <div class="col-md-2">
+                                        <input class="form-control" type="number"  name="newKeyCode" placeholder="รหัสพัสดุ" maxlength="10" autocomplete="off"/>
                                     </div>
-                                    
-                                    <div class="col-md-3">
-                                        <input class="form-control" type="text"  name="newKeySuffix" placeholder="หน่วย" maxlength="10" autocomplete="off" required/>
+
+                                    <div class="col-md-5">
+                                        <input id="keyItem" class="form-control" type="text"  name="newKeyDetail" placeholder="ชื่อเครื่องมือเครื่องใช้ใหม่ที่ต้องการเพิ่ม" maxlength="100" autocomplete="off" required/>
                                     </div>
-                                    
+
+                                    <div class="col-md-1">
+                                        <input class="form-control" type="text"  name="newKeySuffix" placeholder="หน่วย" maxlength="2" autocomplete="off" required/>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input class="form-control" type="text"  name="newLastSuffix" placeholder="หน่วยย่อย" autocomplete="off" required/>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input class="form-control" type="number"  name="newLastxQty" placeholder="แปลงหน่วย" autocomplete="off" required/>
+                                    </div>
+
                                     <div class="form-group" align="center">
-                                        <button id="submitBtn" class="btn btn-lg btn-danger" type="submit" style="margin: 1em;">
+                                        <button class="btn btn-lg btn-danger" type="submit" name="newSubmitBtn" value="submit" style="margin: 1em;">
                                             <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;เพิ่ม
                                         </button>
+                                        <button class="btn btn-sm btn-default" type="reset" name="resetBtn" value="reset">
+                                            <span class="glyphicon glyphicon-repeat"></span>&nbsp;รีเซ็ท
+                                        </button>
                                     </div>
-                                    
+
                                 </form>
 
                             </div> <!-- /.alert-warning -->
 
                             <div class = "alert alert-danger"> 
                                 <span class = "label label-warning">คำเตือน!</span> หากรายชื่อที่ต้องการเพิ่ม มีอยู่แล้ว ควรใช้ชื่อเดิม เพื่อง่ายต่อการตรวจนับในภายหลัง<br/>
-                                <span class = "label label-warning">คำเตือน!</span> โปรดตรวจสอบให้แน่ใจว่าไม่มีรายการซํ้าที่คล้ายกัน ด้วยการเว้น "&nbsp;&nbsp;" 2 ช่อง<br/>
+                                <span class = "label label-warning">คำเตือน!</span> รหัสพัสดุ สำหรับ เบิกคลัง<br/>
+                                <span class = "label label-warning">คำเตือน!</span> ปล่อยว่างไว้ สำหรับ เบิกซื้อ<br/>
                             </div> 
 
 
@@ -152,7 +190,7 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
                                                 <!--
                                                 <td><a href="key_edit.php?kid=<?= $rowKeyi['key_id'] ?>" target="_blank"><span class="label label-warning"><span class="glyphicon glyphicon-edit"></span></span></a></td>
                                                 -->
-                                                </tr>
+                                            </tr>
                                         <?php } ?>
 
                                     </tbody>
