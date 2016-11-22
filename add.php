@@ -41,7 +41,7 @@ if ($_SESSION['status'] != "KEY") {
         <div class="row">
 
             <div class="col-md-2 sidebar">
-                 <?php include 'sidebar.php'; ?>
+                <?php include 'sidebar.php'; ?>
                 <div class = 'alert alert-success'>
                     <b>สถานะ:</b><br/>
                     <?php
@@ -80,7 +80,7 @@ if ($_SESSION['status'] != "KEY") {
                                         <input type="number" class="form-control" name="var_zpo" placeholder="" style="padding: 0.4em;" required>
                                     </div>
                                 </div>
-
+                                
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <span class="input-group-addon">วันที่ใบเสร็จ</span>
@@ -237,25 +237,26 @@ if ($_SESSION['status'] != "KEY") {
 
         <script> /*PREVENT DOUBLE SUBMIT: ทำให้ปุ่ม submit กดได้ครั้งเดียว ป้องกับปัญหาเนต lag แล้ว user กดเบิ้ล มันจะทำให้ส่งค่า 2 เท่า */
                                         $(document).ready(function () {
-                                            $("#mainForm").submit(function () {
-                                                $("#submitBtn").attr("disabled", true);
-                                                return true;
-                                            });
+                                        $("#mainForm").submit(function () {
+                                        $("#submitBtn").attr("disabled", true);
+                                        return true;
+                                        });
                                         });
         </script>
 
         <script>
             var config = {
-                '.chosen-select': {},
-                '.chosen-select-deselect': {allow_single_deselect: true},
-                '.chosen-select-no-single': {disable_search_threshold: 10},
-                '.chosen-select-no-results': {no_results_text: 'Oops, nothing found!'},
-                '.chosen-select-width': {width: "95%"}
+            '.chosen-select': {},
+                    '.chosen-select-deselect': {allow_single_deselect: true},
+                    '.chosen-select-no-single': {disable_search_threshold: 10},
+                    '.chosen-select-no-results': {no_results_text: 'Oops, nothing found!'},
+                    '.chosen-select-width': {width: "95%"}
             }
             for (var selector in config) {
-                $(selector).chosen(config[selector]);
+            $(selector).chosen(config[selector]);
             }
         </script>
+
 
     </body>
 
