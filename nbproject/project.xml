@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.web.clientproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/clientside-project/1">
+            <name>equipment</name>
+        </data>
+        <libraries xmlns="http://www.netbeans.org/ns/cdnjs-libraries/1"/>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>df</word>
+            <word>ง</word>
+            <word>งาน</word>
+            <word>จำนวน</word>
+            <word>ดชอบ</word>
+            <word>มงาน</word>
+            <word>ยด</word>
+            <word>รายการ</word>
+            <word>ลำด</word>
+            <word>วย</word>
+            <word>หน</word>
+            <word>อ</word>
+            <word>าน</word>
+        </spellchecker-wordlist>
+    </configuration>
+</project>
