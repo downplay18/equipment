@@ -19,10 +19,10 @@ $(".addmore").on('click', function () {
 <td><input class='form-control' type='number' id='var_qty_" + i + "' name='var_qty[]' required/></td> \n\
 <td><input class='form-control' type='number' id='var_unitPrice_" + i + "' name='var_unitPrice[]' required/></td> \n\
 <td><input class='form-control' type='number' id='var_amount_" + i + "' name='var_amount[]' required/></td> \n\
-<td bgcolor='#ffffe6'><input class='form-control' type='text' id='var_lastSuffix_" + i + "' name='var_lastSuffix[]' required/></td>\n\
+<td bgcolor='#ffffe6'><input class='form-control' type='text' id='var_lastSuffix_" + i + "' name='var_lastSuffix[]' required readonly/></td>\n\
 <td bgcolor='#ffffe6'><input class='form-control' type='number' id='var_lastQty_" + i + "' name='var_lastQty[]' required/></td></tr>";
     $('table').append(data);
-    //row = i;
+    row = i;
     $('#varDetail_' + i).autocomplete({
         source: function (request, response) {
             $.ajax({
@@ -32,7 +32,7 @@ $(".addmore").on('click', function () {
                 data: {
                     name_startsWith: request.term,
                     type: 'item_table',
-                    row_num: i
+                    row_num: row
                 },
                 success: function (data) {
                     response($.map(data, function (item) {
