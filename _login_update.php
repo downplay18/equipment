@@ -67,7 +67,7 @@ if (!isset($_SESSION['user_id'])) {
                             <div class="col-md-12">
                                 <div class="col-md-3" align="right" style="padding:0.4em"><b>ชื่อพนักงาน</b></div>
                                 <div class="col-md-3"><p type="text" class="form-control-static"><?= $lupdateResult["name"]; ?></div>
-                                <div class="col-md-4"><input type="text" class="form-control input-sm" name="lupdate_name" value="<?= $lupdateResult["name"]; ?>"></div>
+                                <div class="col-md-4"><input type="text" class="form-control input-sm" name="lupdate_name" value="<?= $lupdateResult["name"]; ?>" readonly></div>
                             </div>
 
                             <div class="col-md-12">
