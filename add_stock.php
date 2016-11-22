@@ -23,25 +23,19 @@ if ($_SESSION['status'] != "KEY") {
 
         <?php
         include("navbar.php");
-        /*
-          echo '<br/>';
-          echo 'SESSION = ';
-          print_r($_SESSION);
-          echo '<br/>POST = <br/>';
-          print_r($_POST); */
-        /*
-          $test = array(x,'y',z);
-          $test1 = array();
-          echo '<br>test1='.isset($test1);
-          echo '<br>test1='.isset($test1[0]);
-          echo '<br>test='.$test[1]; */
+        
+//        echo '<br/>';
+//        echo 'SESSION = ';
+//        print_r($_SESSION);
+//        echo '<br/>POST = <br/>';
+//        print_r($_POST); 
         ?>
 
 
         <div class="row">
 
             <div class="col-md-2 sidebar">
-                 <?php include 'sidebar.php'; ?>
+                <?php include 'sidebar.php'; ?>
                 <div class = 'alert alert-info'>
                     <b>สถานะ:</b><br/>
                     <?php
@@ -74,12 +68,7 @@ if ($_SESSION['status'] != "KEY") {
 
                             <div class="row alert alert-info">
 
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">รหัสพัสดุ</span>
-                                        <input type="number" class="form-control" name="var_zpo" placeholder="" style="padding: 0.4em;" required>
-                                    </div>
-                                </div>
+                                <div class="col-md-4"></div>
 
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -127,7 +116,8 @@ if ($_SESSION['status'] != "KEY") {
                             <table class="table table-bordered">
                                 <col width="0.5%"> <!-- checkbox -->
                                 <col width="0.5%"> <!-- row number i -->
-                                <col width="30%"> <!-- detail -->
+                                <col width="10%"> <!-- ZDIR -->
+                                <col width="20%"> <!-- detail -->
                                 <col width="5%"> <!-- slipSuffix -->
                                 <col width="5%"> <!-- qty -->
                                 <col width="5%"> <!-- unitPrice -->
@@ -137,7 +127,8 @@ if ($_SESSION['status'] != "KEY") {
                                 <tr>
                                     <th><input class='check_all' type='checkbox' onclick="select_all()"/></th>
                                     <th>#</th>
-                                    <th>รายการ(ตามใบราคากลาง)</th>
+                                    <th>รหัสพัสดุ*</th>
+                                    <th>รายการ</th>
                                     <th>หน่วย</th>
                                     <th>จำนวน</th>
                                     <!-- <th>ราคา/หน่วย</th> -->
@@ -145,24 +136,28 @@ if ($_SESSION['status'] != "KEY") {
                                     <th bgcolor="#ffff66">หน่วยย่อย</th>
                                     <th bgcolor="#ffff66">แปลงหน่วย</th>
                                 </tr>
+
                                 <tr>
 
                                     <td><input type='checkbox' class='case'/></td>
                                     <td><span id='snum'>1.</span></td>
-                                    <td><input class="form-control" type='text' id='varDetail_1' name='varDetail[]' maxlength="100" required/></td>
-                                    <td><input class="form-control" type='text' id='var_slipSuffix_1' name='var_slipSuffix[]' required/> </td>
-                                    <td><input class="form-control" type='number' id='var_qty_1' name='var_qty[]' required/> </td>
+
+                                    <td><input class="form-control" type='text' id='varZDIR_1' name='varZDIR[]' required/></td>
+                                    <td><input class="form-control" type='text' id='varDetail_1' name='varDetail[]' maxlength="100" required readonly/></td>
+                                    <td><input class="form-control" type='text' id='varSlipSuffix_1' name='varSlipSuffix[]' required readonly/> </td>
+                                    <td><input class="form-control" type='number' id='varQty_1' name='varQty[]' required/> </td>
                                     <!--
                                     <td><input class="form-control" type='number' id='var_unitPrice_1' name='var_unitPrice[]' required/> </td>
                                     <td><input class="form-control" type='number' id='var_amount_1' name='var_amount[]' required/> </td>
                                     -->
-                                    <td bgcolor="#ffffe6"><input class="form-control" type='text' id='var_lastSuffix_1' name='var_lastSuffix[]' required readonly/></td>
-                                    <td bgcolor="#ffffe6"><input class="form-control" type='number' id='var_lastQty_1' name='var_lastQty[]' required/></td>
+                                    <td bgcolor="#ffffe6"><input class="form-control" type='text' id='varLastSuffix_1' name='varLastSuffix[]' required readonly/></td>
+                                    <td bgcolor="#ffffe6"><input class="form-control" type='number' id='varLastQty_1' name='varLastQty[]' required/></td>
                                 </tr>
                             </table>
                             <button type="button" class='btn btn-danger delete'><span class="glyphicon glyphicon-minus-sign"></span> Delete</button>
                             <button type="button" class='btn btn-success addmore'><span class="glyphicon glyphicon-plus-sign"></span> Add More</button>
-                            <span style="font-size: 1.25em;color: red;">  ***หากไม่มีรายชื่อเครื่องมือฯ ที่ต้องการในลิสต์ ให้เพิ่ม <a href="key_item.php" target="_blank">ที่นี่</a> ก่อน</span>
+                            <span style="font-size: 1.25em;color: red;">  ***หากไม่มีรายชื่อเครื่องมือฯ ที่ต้องการในลิสต์  
+                                <a href="key_item.php" class="btn btn-warning btn-sm" target="_blank"><span class="glyphicon glyphicon-plus"></span> เพิ่มรายการใหม่</a></span>
 
                         </div> <!-- /input field -->
 

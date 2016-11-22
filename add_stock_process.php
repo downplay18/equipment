@@ -27,7 +27,7 @@ $_SESSION['addStockMsg'] = array();
 </head>
 
 <?php
-if (!isset($_POST['var_lastSuffix'])) {
+if (!isset($_POST['varLastSuffix'])) {
     array_push($_SESSION['addStockMsg'], "<p style='font-size:1.5em;color:red;'>ERROR! เลือกชื่อเครื่องมือเครื่องใช้จากในลิสต์เท่านั้น</p>");
     echo "<p style='font-size:1.5em;color:red;'>ERROR! โปรดเลือกชื่อเครื่องมือเครื่องใช้จากในลิสต์เท่านั้น</p>";
     echo "<p style='font-size:1.25em;color:red;'>กลับไปแก้ไข กด <a class='btn btn-danger' href='add_urgent.php'><span class='glyphicon glyphicon-arrow-left'></span> ที่นี่</a></p>";
@@ -121,10 +121,10 @@ $row_count = count($_POST['varDetail']);
 
 //filter array เพื่อทำให้แถวที่เป็น empty string ถูกทำให้ null โดยไม่เสียตำแหน่งที่ถูกต้องของ index
 $postDetail = array_filter($_POST['varDetail']);
-$postSlipSuffix = array_filter($_POST['var_slipSuffix']);
-$postQty = array_filter($_POST['var_qty']);
-$postLastSuffix = array_filter($_POST['var_lastSuffix']);
-$postLastQty = array_filter($_POST['var_lastQty']);
+$postSlipSuffix = array_filter($_POST['varSlipSuffix']);
+$postQty = array_filter($_POST['varQty']);
+$postLastSuffix = array_filter($_POST['varLastSuffix']);
+$postLastQty = array_filter($_POST['varLastQty']);
 
 
 //การสร้างประโยค query
@@ -139,7 +139,7 @@ for ($rc = 0; $rc < $row_count; $rc++) { /* 1 $rc คือ 1 แถวของ
     $itemQS .= "INSERT INTO `item` (`detail`,`suffix`,`quantity`,`owner`)";
 
     //ใส่ใน TABLE: item_slip
-    $slipQS .= " VALUES ('" . $_POST['var_zpo'] . "'"; /* zpo */
+    $slipQS .= " VALUES ('" . $_POST['varZDIR'][$rc] . "'"; /* zpo */
     $slipQS .= ",'" . $_POST['var_slipDate'] . "'"; /* slip_date */
     $slipQS .= ",'" . $postDetail[$rc] . "'"; /* detail[] */
     $slipQS .= ",'" . $postSlipSuffix[$rc] . "'"; /* slip_suffix[] */
@@ -150,8 +150,8 @@ for ($rc = 0; $rc < $row_count; $rc++) { /* 1 $rc คือ 1 แถวของ
     //ใส่ใน TABLE: item_add_record
     $addRecordQS .= " VALUES ('" . $postDetail[$rc] . "'";
     $addRecordQS .= ",'" . $postLastSuffix[$rc] . "'";
-    $qtysum = ($_POST['var_qty'][$rc] * $postLastSuffix[$rc]); //ผลคูณของการแปลง slip suffix เป็น item suffix
-    $addRecordQS .= ",'" . ($_POST['var_qty'][$rc] * $postLastQty[$rc]) . "'";
+    $qtysum = ($_POST['varQty'][$rc] * $postLastSuffix[$rc]); //ผลคูณของการแปลง slip suffix เป็น item suffix
+    $addRecordQS .= ",'" . ($_POST['varQty'][$rc] * $postLastQty[$rc]) . "'";
     date_default_timezone_set("Asia/Bangkok");
     $addRecordQS .= ",'" . date('Y-m-d') . "'"; /* ต้องใช้วันที่ปัจจุบัน */
     $addRecordQS .= ",'" . date("H:i") . "'"; /* ต้องใช้เวลาปัจจุบัน */
@@ -169,9 +169,9 @@ for ($rc = 0; $rc < $row_count; $rc++) { /* 1 $rc คือ 1 แถวของ
     //ใส่ใน TABLE: item
     $itemQS .= " VALUES ('" . $postDetail[$rc] . "'";
     $itemQS .= ",'" . $postLastSuffix[$rc] . "'";
-    $itemQS .= ",'" . ($_POST['var_qty'][$rc] * $postLastQty[$rc]) . "'";
+    $itemQS .= ",'" . ($_POST['varQty'][$rc] * $postLastQty[$rc]) . "'";
     $itemQS .= ",'" . $_POST['var_owner'] . "'";
-    $itemQS .= ") ON DUPLICATE KEY UPDATE `quantity`=`quantity`+" . ($_POST['var_qty'][$rc] * $postLastQty[$rc]) . ";";
+    $itemQS .= ") ON DUPLICATE KEY UPDATE `quantity`=`quantity`+" . ($_POST['varQty'][$rc] * $postLastQty[$rc]) . ";";
 
     //เก็บเป็น Alert ให้userดูอีกที
     $userAlert = $rc + 1;
@@ -222,6 +222,10 @@ if ($uploadOk == 1 && move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $t
 </div>
 
 <?php 
+    header("Location: $root_url/add_stock.php", true, 302);
+?>
+
+<?php 
 echo "<pre>";
 echo '<br/>';
 echo 'SESSION = ';
@@ -233,5 +237,6 @@ echo "</pre>";
 echo "<br/></br>itemQS= " . $itemQS;
 echo "<br/></br>addRecordQS= " . $addRecordQS;
 echo "<br/></br>slipQS= " . $slipQS;
+echo "<br/></br>rowCount= " . $row_count;
 echo "<br/><br/>"; 
 ?>

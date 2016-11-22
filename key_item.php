@@ -64,11 +64,11 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
     <body>
         <?php
         include 'navbar.php';
-
+        /*
         echo 'SESSION = ';
         print_r($_SESSION);
         echo '<br/>POST = <br/>';
-        print_r($_POST);
+        print_r($_POST); */
         ?>
 
         <div class="row">
@@ -118,9 +118,9 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
                                     <div class="col-md-5">
                                         <input id="keyItem" class="form-control" type="text"  name="newKeyDetail" placeholder="ชื่อเครื่องมือเครื่องใช้ใหม่ที่ต้องการเพิ่ม" maxlength="100" autocomplete="off" required/>
                                     </div>
-
+                                    
                                     <div class="col-md-1">
-                                        <input class="form-control" type="text"  name="newKeySuffix" placeholder="หน่วย" maxlength="2" autocomplete="off" required/>
+                                        <input class="form-control" type="text"  name="newKeySuffix" placeholder="หน่วยEA" maxlength="2" autocomplete="off" required/>
                                     </div>
 
                                     <div class="col-md-2">
@@ -128,7 +128,7 @@ if ($_POST['newKeyItem'] != "" && $_POST['newKeySuffix'] != "") {
                                     </div>
 
                                     <div class="col-md-2">
-                                        <input class="form-control" type="number"  name="newLastxQty" placeholder="แปลงหน่วย" autocomplete="off" required/>
+                                        <input class="form-control" type="number"  name="newLastxQty" placeholder="แปลงหน่วย" autocomplete="off"/>
                                     </div>
 
                                     <div class="form-group" align="center">

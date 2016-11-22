@@ -5,12 +5,16 @@ require_once 'connection.php';
 if ($_POST['type'] == 'item_table') {
     $row_num = $_POST['row_num'];
     $name = $_POST['name_startsWith'];
-    $query = "SELECT `key_detail`,`key_suffix` FROM `key_item` WHERE `key_detail` LIKE '%" . $name . "%'";
+    $query = "
+        SELECT `key_code`,`key_detail`,`slip_suffix`,`last_suffix`,`last_xqty` 
+        FROM `key_item` 
+        WHERE `key_code` 
+        LIKE '%" . $name . "%'";
     //%" . $name . "%
     $result = mysqli_query($connection, $query);
     $data = array();
     while ($row = mysqli_fetch_assoc($result)) {
-        $name = $row['key_detail'] . '|' . $row['key_suffix'];
+        $name = $row['key_code'] . '|' . $row['key_detail'] . '|' . $row['slip_suffix']. '|' . $row['last_suffix']. '|' . $row['last_xqty'];
         array_push($data, $name);
     }
     echo json_encode($data);
