@@ -11,7 +11,7 @@
                 <a href="add_urgent.php" class="list-group-item list-group-item-warning">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-minus"></span> เร่งด่วน</a>
             </div>
 
-            <a href="key_item.php" class="list-group-item" target="_blank"><span class="glyphicon glyphicon-list"></span> จัดการรายชื่อเครื่องมือฯ ทั้งหมด</a>
+             <!--<a href="key_item.php" class="list-group-item" target="_blank"><span class="glyphicon glyphicon-list"></span> จัดการรายชื่อเครื่องมือฯ ทั้งหมด</a>-->
         <?php } ?>
         <a href="period_report.php" class="list-group-item"><span class="glyphicon glyphicon-file"></span> รายงาน</a>
         <!--

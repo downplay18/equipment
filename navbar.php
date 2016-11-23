@@ -1,3 +1,5 @@
+<?php include("root_url.php"); ?>
+
 <!-- Navigation -->
 <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">

@@ -55,7 +55,9 @@ include("fusioncharts.php");
                     <h4 align="center">รายการที่สนใจ
                         <a class="btn btn-info btn-sm" href="user_select_fav.php" target="" role="button"><span class="glyphicon glyphicon-edit"></span></a>
                     </h4>
-                    
+
+
+
                     <?php
                     //ดึงรายการโปรดมาแสดง
                     $favShowQS = "SELECT iid, detail, suffix, quantity, IFNULL(qty_alert,0) AS qty_alert, owner"
@@ -86,8 +88,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label1'][0] . "' AND '" . $array['label1'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label1'][0] . "' AND '" . $array['label1'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add1Qry = mysqli_query($connection, $add1QS);
@@ -114,8 +116,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label2'][0] . "' AND '" . $array['label2'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label2'][0] . "' AND '" . $array['label2'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add2Qry = mysqli_query($connection, $add2QS);
@@ -141,8 +143,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label3'][0] . "' AND '" . $array['label3'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label3'][0] . "' AND '" . $array['label3'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add3Qry = mysqli_query($connection, $add3QS);
@@ -168,8 +170,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label4'][0] . "' AND '" . $array['label4'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label4'][0] . "' AND '" . $array['label4'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add4Qry = mysqli_query($connection, $add4QS);
@@ -195,8 +197,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label5'][0] . "' AND '" . $array['label5'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label5'][0] . "' AND '" . $array['label5'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add5Qry = mysqli_query($connection, $add5QS);
@@ -222,8 +224,8 @@ include("fusioncharts.php");
                                         SELECT SUM(add_qty) AS value
                                         FROM item_add_record
                                         WHERE add_detail = '" . $rowFavShow['detail'] . "' 
-                                        AND owner = '" . $_SESSION['division'] . "' 
-                                        AND(slip_date BETWEEN '" . $array['label6'][0] . "' AND '" . $array['label6'][1] . "')
+                                        AND adder = '" . $_SESSION['division'] . "' 
+                                        AND(add_date BETWEEN '" . $array['label6'][0] . "' AND '" . $array['label6'][1] . "')
                                         GROUP BY add_detail
                                     ),0) AS value";
                         $add6Qry = mysqli_query($connection, $add6QS);
@@ -273,13 +275,6 @@ include("fusioncharts.php");
                         ?>
 
                         <?php
-                        /*
-                        echo "<pre>";
-                        print_r($array);
-                        //print_r($add6QS);
-                        echo "</pre>";
-                        */
-                        
                         //ทำเดือนไทยใส่ใน $array['label?'][3]
                         ?>
 

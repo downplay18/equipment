@@ -117,26 +117,44 @@ AND username=mykey
 
 
 
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
 
 
-                    <div class="alert alert-default col-md-6">     
+                    <div class="alert alert-default col-md-4">     
                         <h4>รายชื่อเครื่องมือเครื่องใช้กลางรอการอนุมัติ</h4>
                         <?php
 //อนุมัติ key_item ที่ถูกเพิ่มโดย KEY
                         $keyKnownQS = "
-SELECT key_id, key_detail, key_suffix, k.divisionID, listDivision
-FROM  key_item k
-INNER JOIN list_division d 
-ON k.divisionID = d.divisionID
-AND k.divisionID =  '" . $_SESSION['div_id'] . "'
+SELECT key_id, key_code, key_detail, slip_suffix, last_suffix, last_xqty
+FROM  key_item
 ";
                         $keyKnownQry = mysqli_query($connection, $keyKnownQS);
                         if (mysqli_num_rows($keyKnownQry) == 0) {
                             echo "ยังไม่มีชื่อเครื่องมือฯกลางเพิ่มขึ้นใหม่";
                         } else {
                             while ($row = mysqli_fetch_assoc($keyKnownQry)) {
-                                echo $row['key_detail'] . "<br/>";
+                                echo $row['key_detail'] . " (". $row['slip_suffix'] .":". $row['last_suffix'] .")" ."<br/>";
                             }
                         }
                         ?>
