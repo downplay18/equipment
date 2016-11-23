@@ -136,7 +136,7 @@ include 'item_headerInfo.php';
 for ($rc = 0; $rc < $row_count; $rc++) { /* 1 $rc คือ 1 แถวของรายการใน 1 ใบเสร็จ */
     $slipQS .= "INSERT INTO `item_slip` (`zpo`,`slip_date`,`detail`,`slip_suffix`,`qty`,`adder`)";
     $addRecordQS .= "INSERT INTO `item_add_record` (`add_detail`,`add_suffix`,`add_qty`,`add_date`,`add_time`,`adder`,`owner`,`slip`,`slip_date`)";
-    $itemQS .= "INSERT INTO `item` (`detail`,`suffix`,`quantity`,`owner`)";
+    $itemQS .= "INSERT INTO `item` (`detail`,`suffix`,`quantity`,`owner`,`kid`)";
 
     //ใส่ใน TABLE: item_slip
     $slipQS .= " VALUES ('" . $_POST['varZDIR'][$rc] . "'"; /* zpo */
@@ -171,6 +171,7 @@ for ($rc = 0; $rc < $row_count; $rc++) { /* 1 $rc คือ 1 แถวของ
     $itemQS .= ",'" . $postLastSuffix[$rc] . "'";
     $itemQS .= ",'" . ($_POST['varQty'][$rc] * $postLastQty[$rc]) . "'";
     $itemQS .= ",'" . $_POST['var_owner'] . "'";
+    $itemQS .= ",'" . $_POST['varKID'][$rc] . "'";
     $itemQS .= ") ON DUPLICATE KEY UPDATE `quantity`=`quantity`+" . ($_POST['varQty'][$rc] * $postLastQty[$rc]) . ";";
 
     //เก็บเป็น Alert ให้userดูอีกที

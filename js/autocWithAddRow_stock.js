@@ -14,7 +14,8 @@ $(".addmore").on('click', function () {
     count = $('table tr').length;
 
     var data = "<tr><td><input type='checkbox' class='case'/></td><td><span id='snum" + i + "'>" + count + ".</span></td>";
-    data += "<td><input class='form-control' type='text' id='varZDIR_" + i + "' name='varZDIR[]' required/></td>\n\
+    data += "<td><input class='form-control' type='number' id='varKID_" + i + "' name='varKID[]' required readonly/></td>\n\
+<td><input class='form-control' type='text' id='varZDIR_" + i + "' name='varZDIR[]' required/></td>\n\
 <td><input class='form-control' type='text' id='varDetail_" + i + "' name='varDetail[]' maxlength=\"100\" required readonly/></td> \n\
 <td><input class='form-control' type='text' id='varSlipSuffix_" + i + "' name='varSlipSuffix[]' required readonly/></td> \n\
 <td><input class='form-control' type='number' id='varQty_" + i + "' name='varQty[]' required/></td> \n\
@@ -55,6 +56,7 @@ $(".addmore").on('click', function () {
             $('#varSlipSuffix_' + id[1]).val(names[2]);
             $('#varLastSuffix_' + id[1]).val(names[3]);
             $('#varLastQty_' + id[1]).val(names[4]);
+            $('#varKID_' + id[1]).val(names[5]);
         }
     });
     i++;
@@ -109,5 +111,6 @@ $('#varZDIR_1').autocomplete({
         $('#varSlipSuffix_1').val(names[2]);
         $('#varLastSuffix_1').val(names[3]);
         $('#varLastQty_1').val(names[4]);
+        $('#varKID_1').val(names[5]);
     }
 });

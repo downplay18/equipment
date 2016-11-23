@@ -23,7 +23,7 @@ if ($_SESSION['status'] != "KEY") {
 
         <?php
         include("navbar.php");
-        
+
 //        echo '<br/>';
 //        echo 'SESSION = ';
 //        print_r($_SESSION);
@@ -116,6 +116,7 @@ if ($_SESSION['status'] != "KEY") {
                             <table class="table table-bordered">
                                 <col width="0.5%"> <!-- checkbox -->
                                 <col width="0.5%"> <!-- row number i -->
+                                <col width="1%"> <!-- KID -->
                                 <col width="10%"> <!-- ZDIR -->
                                 <col width="20%"> <!-- detail -->
                                 <col width="5%"> <!-- slipSuffix -->
@@ -127,6 +128,7 @@ if ($_SESSION['status'] != "KEY") {
                                 <tr>
                                     <th><input class='check_all' type='checkbox' onclick="select_all()"/></th>
                                     <th>#</th>
+                                    <th>id</th>
                                     <th>รหัสพัสดุ*</th>
                                     <th>รายการ</th>
                                     <th>หน่วย</th>
@@ -141,9 +143,10 @@ if ($_SESSION['status'] != "KEY") {
 
                                     <td><input type='checkbox' class='case'/></td>
                                     <td><span id='snum'>1.</span></td>
-
+                                    
+                                    <td><input class="form-control" type='number' id='varKID_1' name='varKID[]' required readonly/></td>
                                     <td><input class="form-control" type='text' id='varZDIR_1' name='varZDIR[]' required/></td>
-                                    <td><input class="form-control" type='text' id='varDetail_1' name='varDetail[]' maxlength="100" required readonly/></td>
+                                    <td><input class="form-control col-md-9" type='text' id='varDetail_1' name='varDetail[]' style="width:100%;" maxlength="100" required readonly/></td>
                                     <td><input class="form-control" type='text' id='varSlipSuffix_1' name='varSlipSuffix[]' required readonly/> </td>
                                     <td><input class="form-control" type='number' id='varQty_1' name='varQty[]' required/> </td>
                                     <!--
