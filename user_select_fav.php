@@ -15,6 +15,10 @@ if ($_SESSION['user_id'] == "") {
 require("connection.php");
 ?>
 
+<?php
+
+?>
+
 <html>
     <head>
 
@@ -29,11 +33,11 @@ require("connection.php");
         require("navbar.php");
 
         /*
-          echo '<br/>';
-          echo 'SESSION = ';
-          print_r($_SESSION);
-          echo '<br/>POST = <br/>';
-          print_r($_POST); */
+        echo '<br/>';
+        echo 'SESSION = ';
+        print_r($_SESSION);
+        echo '<br/>POST = <br/>';
+        print_r($_POST); */
         ?>
 
         <!-- Main container -->
@@ -88,6 +92,8 @@ require("connection.php");
                         <h2>รายการที่สนใจ</h2>
                     </div>
 
+
+
                     <div class="col-md-4 col-md-offset-2">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
@@ -95,17 +101,29 @@ require("connection.php");
                         </div>
                     </div>
 
-                    <div class="col-md-12 col-md-offset-2">
-                        <?php
-                        /* เรียก `iid`กับ `detail` มาแสดงให้ user เอาไว้เลือก */
-                        //$qryArr = array('detail');
-                        //$qryArr_size = count($qryArr);
-                        $qstatement = "SELECT `iid`,`detail`,`suffix`,`quantity`,`owner` FROM `item` WHERE `owner` LIKE '" . $_SESSION['division'] . "'";
-                        $itemQuery = mysqli_query($connection, $qstatement) or die("<br/>user_select_fav item table คิวรี่ล้มเหลว!<br/>" . mysql_error());
-                        $count = mysqli_num_rows($itemQuery);
-                        echo "<br/><h4>มีทั้งหมด " . $count . " รายการ ที่เป็นของ" . $_SESSION['division'] . "</h4><br/>";
-                        ?> 
-                    </div>
+                    <form action="" method="post">
+<!--                        <div class="col-md-12">
+                            ต้องการแสดง: 
+                            <a class='btn btn-default' name="showAll" type="submit" value="ทุกกลุ่มงาน">
+                                <span class='glyphicon glyphicon-list'></span> ภาพรวมทั้งหมด
+                            </a>
+                        </div>-->
+                        <div class="col-md-12 col-md-offset-2">
+                            <?php
+                            /* เรียก `iid`กับ `detail` มาแสดงให้ user เอาไว้เลือก */
+                            //$qryArr = array('detail');
+                            //$qryArr_size = count($qryArr);
+                            $qstatement = "SELECT `iid`,`detail`,`suffix`,quantity,`owner` 
+                                FROM `item` 
+                                WHERE owner = '". $_SESSION['division'] ."'
+                                GROUP BY detail
+                                ORDER BY CONVERT(`detail` USING TIS620)";
+                            $itemQuery = mysqli_query($connection, $qstatement) or die("<br/>user_select_fav item table คิวรี่ล้มเหลว!<br/>" . mysql_error());
+                            $count = mysqli_num_rows($itemQuery);
+                            echo "<br/><h4>มีทั้งหมด " . $count . " รายการ ที่เป็นของ" . $_SESSION['division'] . "</h4><br/>";
+                            ?> 
+                        </div>
+                    </form>
 
                     <div class="col-md-10 col-md-offset-2">
                         <form id='mainForm' action="user_select_fav_process.php" method="post">
@@ -146,9 +164,12 @@ require("connection.php");
                             </div>  <!-- /submit button -->
                         </form> <!-- /.form -->
                     </div>
+
+
+
+
                 </div> <!-- /.col-md-8 -->
-                <div class="col-md-2">
-                </div>
+                <div class="col-md-2"></div>
 
                 <br/>
 
