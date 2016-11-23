@@ -22,7 +22,7 @@ if (isset($_POST['newSubmitBtn'])) {
         array_push($keyMsg, "<p style='font-size:1.5em;color:red;'>ชื่อซํ้า!&nbsp;&nbsp;<u>" . $_POST['newKeyItem'] . "</u>&nbsp;&nbsp;มีอยู่แล้วในฐานข้อมูล!<br/>ไม่มีการเปลี่ยนแปลงเกิดขึ้น...</p>");
     } else { //ไม่เจอซํ้า เพิ่มเข้าไปใน :key_item
         $newKeyQS = "INSERT INTO key_item (key_code, key_detail, slip_suffix, last_suffix, last_xqty)
-            VALUES ('" . $_POST['newKeyCode'] . "', '" . $_POST['newKeyItem'] . "', '" . $_POST['newKeySuffix'] . "', '" . $_POST['newLastSuffix'] . "', '" . $_POST['newLastxQty'] . "');";
+            VALUES ('" . $_POST['newKeyCode'] . "', '" . $_POST['newKeyDetail'] . "', '" . $_POST['newKeySuffix'] . "', '" . $_POST['newLastSuffix'] . "', '" . $_POST['newLastxQty'] . "');";
         $newKeyQry = mysqli_query($connection, $newKeyQS);
         if ($newKeyQry) {
             array_push($keyMsg, "<p style='font-size:1.25em;color:blue;'>เพิ่มรายชื่อ <u>" . $_POST['newKeyItem'] . "</u> ในรายชื่อกลางสำเร็จ!<br/>สามารถเรียกใช้งานในหน้าเพิ่มใบเสร็จได้ทันที!</p>");
