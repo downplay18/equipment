@@ -84,17 +84,17 @@ if (empty($_POST['submitBtn']) || isset($_POST['resetBtn'])) {
     }
     $allDetailQS .= " IFNULL(sumTakeQty,0) AS sumTakeQty
         , IFNULL( (IFNULL(periodAddQty, 0) - IFNULL(sumTakeQty, 0)),0) AS remaining
-        , adder
+        , owner
 FROM item_add_record AS iar";
 
     $allDetailQS .= " LEFT OUTER JOIN 
 (
-    SELECT add_detail,  SUM( add_qty ) AS periodAddQty , adder AS allAdder
+    SELECT add_detail,  SUM( add_qty ) AS periodAddQty , owner AS allAdder
     FROM item_add_record
     GROUP BY add_detail ,allAdder 
 ) AS item_add 
 ON item_add.add_detail = iar.add_detail 
-AND item_add.allAdder=iar.adder
+AND item_add.allAdder=iar.owner
 
 LEFT OUTER JOIN 			
 (		
@@ -103,16 +103,16 @@ LEFT OUTER JOIN
     GROUP BY add_detail ,allAdder 	
 ) AS item_take 
 ON item_take.add_detail = iar.add_detail 
-AND item_take.allAdder=iar.adder	
+AND item_take.allAdder=iar.owner	
 
 LEFT OUTER JOIN 
 (
-    SELECT add_detail,  SUM( add_qty ) AS sumHisAddQty , adder AS allAdder
+    SELECT add_detail,  SUM( add_qty ) AS sumHisAddQty , owner AS allAdder
     FROM item_add_record
     GROUP BY add_detail ,allAdder 
 ) AS his_item_add 
 ON his_item_add.add_detail = iar.add_detail 
-AND his_item_add.allAdder=iar.adder
+AND his_item_add.allAdder=iar.owner
 
 LEFT OUTER JOIN 			
 (		
@@ -121,7 +121,7 @@ LEFT OUTER JOIN
     GROUP BY add_detail ,allAdder 	
 ) AS his_item_take 
 ON his_item_take.add_detail = iar.add_detail 
-AND his_item_take.allAdder=iar.adder";
+AND his_item_take.allAdder=iar.owner";
 
 //สร้างส่วนรายชื่อตึก
     foreach ($buildingArray as $v) {
@@ -133,10 +133,13 @@ AND his_item_take.allAdder=iar.adder";
     GROUP BY add_detail ,allAdder, site 	
 ) AS b" . $v['buildingID'] . "
 ON b" . $v['buildingID'] . ".add_detail = iar.add_detail 
-AND b" . $v['buildingID'] . ".allAdder=iar.adder
+AND b" . $v['buildingID'] . ".allAdder=iar.owner
 AND b" . $v['buildingID'] . ".site = '" . $v['listBuilding'] . "'";
     }
-    $allDetailQS .= " GROUP BY iar.add_detail,adder";
+    $allDetailQS .= " GROUP BY iar.add_detail,owner";
+    
+    
+    
     
     
     
@@ -150,20 +153,18 @@ AND b" . $v['buildingID'] . ".site = '" . $v['listBuilding'] . "'";
     foreach ($buildingArray as $v) {
         $allDetailQS .= "IFNULL(sumB" . $v['buildingID'] . "TakeQty,0) AS b" . $v['buildingID'] . ",";
     }
-    $allDetailQS .= " IFNULL(sumTakeQty,0) AS sumTakeQty, IFNULL( ( (IFNULL(sumHisAddQty,0) - IFNULL(sumHisTakeQty,0)) + IFNULL(periodAddQty, 0)) - IFNULL(sumTakeQty, 0),0) AS remaining, adder
+    $allDetailQS .= " IFNULL(sumTakeQty,0) AS sumTakeQty, IFNULL( ( (IFNULL(sumHisAddQty,0) - IFNULL(sumHisTakeQty,0)) + IFNULL(periodAddQty, 0)) - IFNULL(sumTakeQty, 0),0) AS remaining, owner
 FROM item_add_record AS iar";
-
-
 
     $allDetailQS .= " LEFT OUTER JOIN 
 (
-    SELECT add_detail,  SUM( add_qty ) AS periodAddQty , adder AS allAdder
+    SELECT add_detail,  SUM( add_qty ) AS periodAddQty , owner AS allAdder
     FROM item_add_record
     WHERE (slip_date BETWEEN '$startDate' AND '$endDate')
     GROUP BY add_detail ,allAdder 
 ) AS item_add 
 ON item_add.add_detail = iar.add_detail 
-AND item_add.allAdder=iar.adder
+AND item_add.allAdder=iar.owner
 
 LEFT OUTER JOIN 			
 (		
@@ -173,17 +174,17 @@ LEFT OUTER JOIN
     GROUP BY add_detail ,allAdder 	
 ) AS item_take 
 ON item_take.add_detail = iar.add_detail 
-AND item_take.allAdder=iar.adder	
+AND item_take.allAdder=iar.owner	
 
 LEFT OUTER JOIN 
 (
-    SELECT add_detail,  SUM( add_qty ) AS sumHisAddQty , adder AS allAdder
+    SELECT add_detail,  SUM( add_qty ) AS sumHisAddQty , owner AS allAdder
     FROM item_add_record
     WHERE (slip_date BETWEEN '$minDate' AND '$hisDate')
     GROUP BY add_detail ,allAdder 
 ) AS his_item_add 
 ON his_item_add.add_detail = iar.add_detail 
-AND his_item_add.allAdder=iar.adder
+AND his_item_add.allAdder=iar.owner
 
 LEFT OUTER JOIN 			
 (		
@@ -193,7 +194,7 @@ LEFT OUTER JOIN
     GROUP BY add_detail ,allAdder 	
 ) AS his_item_take 
 ON his_item_take.add_detail = iar.add_detail 
-AND his_item_take.allAdder=iar.adder";
+AND his_item_take.allAdder=iar.owner";
 
 //สร้างส่วนรายชื่อตึก
     foreach ($buildingArray as $v) {
@@ -205,16 +206,16 @@ AND his_item_take.allAdder=iar.adder";
     GROUP BY add_detail ,allAdder, site	
 ) AS b" . $v['buildingID'] . "
 ON b" . $v['buildingID'] . ".add_detail = iar.add_detail 
-AND b" . $v['buildingID'] . ".allAdder=iar.adder
+AND b" . $v['buildingID'] . ".allAdder=iar.owner
 AND b" . $v['buildingID'] . ".site = '" . $v['listBuilding'] . "'";
     }
 
-    $allDetailQS .= " WHERE adder LIKE '$tmpLastDiv' GROUP BY iar.add_detail,adder";
+    $allDetailQS .= " WHERE owner LIKE '$tmpLastDiv' GROUP BY iar.add_detail,owner";
 }
 
 
 
-//print_r($allDetailQS);
+
 
 
 
@@ -246,7 +247,9 @@ array_push($allDetailHeader, "รวมจ่าย", "คงเหลือ", "
           echo 'SESSION = ';
           print_r($_SESSION);
           echo '<br/>POST = <br/>';
-          print_r($_POST); */
+          print_r($_POST); 
+          echo '<br/>allDetailQS = <br/>';
+          print_r($allDetailQS); */
         ?>
 
         <div class="row">
@@ -369,7 +372,7 @@ array_push($allDetailHeader, "รวมจ่าย", "คงเหลือ", "
                                     <td><?= $row['b20'] ?></td>
                                     <td style="background-color: #ffe4af;"><?= $row['sumTakeQty'] ?></td>
                                     <td style="background-color: #84ff8a;"><?= $row['remaining'] ?></td>
-                                    <td><?= $row['adder'] ?></td>
+                                    <td><?= $row['owner'] ?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
