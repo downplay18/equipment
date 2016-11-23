@@ -30,49 +30,54 @@ if ($_POST['divName'] == "-- แยกตามกลุ่มงาน --" || e
     unset($_POST['divName']);
     unset($queryMsg);
     $divSiteQS = "
-SELECT add_detail, quantity, add_suffix, add_qty, add_date, adder, slip
+SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
 FROM item
 RIGHT JOIN
 (
-    SELECT add_detail, add_suffix, add_qty, add_date, adder, slip
+    SELECT add_detail, add_suffix, add_qty, slip_date, aa.owner, slip
     FROM item_add_record aa
-    WHERE add_date IN 
+    WHERE slip_date IN 
 	(
-	SELECT MAX(add_date)
-        FROM item_add_record ab
-        GROUP BY ab.add_detail, ab.adder
+            SELECT MAX(slip_date)
+            FROM item_add_record ab
+            GROUP BY ab.add_detail, ab.owner
 	) 
-    GROUP BY add_detail, adder
+    GROUP BY add_detail, aa.owner
 ) AS main
 ON detail = main.add_detail
-AND owner = main.adder        
+AND item.owner = main.owner     
 ";
     $tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
-    $tableData = array("add_detail", "quantity", "add_suffix", "add_date", "add_qty", "adder", "slip");
+    $tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
     $qryMsg = "แสดงทั้งหมด";
-} else { //แสดงเฉพาะที่เลือก
+
+
+
+//แสดงเฉพาะที่เลือก    
+} else { 
     //echo 'SHOW SELECTED';
     $tmpDivision = $_POST['divName'];
-    $divSiteQS = " SELECT add_detail, quantity, add_suffix, add_qty, add_date, main.adder, slip
+    $divSiteQS = "
+SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
 FROM item
 RIGHT JOIN
 (
-    SELECT add_detail, add_suffix, add_qty, add_date, adder, slip
+    SELECT add_detail, add_suffix, add_qty, slip_date, aa.owner, slip
     FROM item_add_record aa
-    WHERE add_date IN 
+    WHERE (aa.add_detail, aa.owner, aa.slip_date) IN 
 	(
-            SELECT MAX(add_date)
+            SELECT ab.add_detail, ab.owner, MAX(slip_date)
             FROM item_add_record ab
-            WHERE adder='$tmpDivision'
-            GROUP BY ab.add_detail, ab.adder
+            WHERE OWNER = '$tmpDivision'
+            GROUP BY ab.add_detail, ab.owner
 	) 
-    GROUP BY add_detail, adder
+    GROUP BY add_detail, aa.owner
 ) AS main
 ON detail = main.add_detail
-AND owner = main.adder  
+AND item.owner = main.owner  
 ";
     $tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
-    $tableData = array("add_detail", "quantity", "add_suffix", "add_date", "add_qty", "adder", "slip");
+    $tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
     $qryMsg = $_POST['divName'];
     $_SESSION['lastDiv'] = $_POST['divName'];
 }
@@ -94,7 +99,7 @@ AND owner = main.adder
         /* ไม่ใช้ case unauthen เพราะไม่มีสิทธิ์เข้าหน้านี้อยู่แล้ว */
         include 'navbar.php';
 
-        /*
+            /*
           echo 'SESSION = ';
           print_r($_SESSION);
           echo '<br/>POST = <br/>';
@@ -102,7 +107,7 @@ AND owner = main.adder
           echo '<br/>divSiteQS = <br/>';
           print_r($divSiteQS);
           echo '<br/>tmpDivision = <br/>';
-          print_r($tmpDivision); */
+          print_r($tmpDivision);  */
         ?>
 
         <div class="row">
@@ -150,13 +155,13 @@ AND owner = main.adder
                                     
                                     
                                     
-                                    <script type="text/javascript">
+<!--                                    <script type="text/javascript">
                                         $(".js-example-basic-multiple").select2();
                                     </script>
                                     <select class="js-example-basic-multiple" multiple="multiple">
                                         <option value="AL">Alabama</option>
                                         <option value="WY">Wyoming</option>
-                                    </select>
+                                    </select>-->
 
                                     
                                     
@@ -209,7 +214,7 @@ AND owner = main.adder
                                             ?>
                                             <tr align="center">
                                                 <td align="left">
-                                                    <a href="show_item.php?detail=<?= $rowDivSite['add_detail'] ?>&owner=<?= $rowDivSite['adder'] ?>&suffix=<?= $rowDivSite['add_suffix'] ?>" target="_blank">
+                                                    <a href="show_item.php?detail=<?= $rowDivSite['add_detail'] ?>&owner=<?= $rowDivSite['owner'] ?>&suffix=<?= $rowDivSite['add_suffix'] ?>" target="_blank">
                                                         <?= $rowDivSite[$tableData[0]] ?>
                                                     </a>
                                                 </td>

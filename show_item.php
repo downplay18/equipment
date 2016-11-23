@@ -20,9 +20,9 @@ if (isset($_GET['detail'])) {
 <?php
 if (isset($_POST['showAddBtn'])) {
     $addTakeQS = "SELECT * FROM `item_add_record` WHERE `add_detail` LIKE '" . $_SESSION['detail'] . "'"
-            . " AND `adder` LIKE '" . $_SESSION['owner'] . "' ORDER BY add_date DESC"; //มันแค่เช็ค add ใช้แค่ owner ไม่ใช่ division
+            . " AND `owner` LIKE '" . $_SESSION['owner'] . "' ORDER BY add_date DESC"; //มันแค่เช็ค add ใช้แค่ owner ไม่ใช่ division
     $addTakeHeader = array('รายการ', 'จำนวน', 'วัน/เวลาเพิ่ม', 'ผู้เพิ่ม', 'ใบเสร็จ');
-    $addTakeData = array('add_detail', 'add_qty', 'add_suffix', 'add_date', 'add_time', 'adder', 'slip');
+    $addTakeData = array('add_detail', 'add_qty', 'add_suffix', 'add_date', 'add_time', 'owner', 'slip');
     $addTakeSize = count($addTakeHeader);
     $addTakeMsg = "รายการเพิ่มทั้งหมด";
 } else { //showTakeBtn as Default
