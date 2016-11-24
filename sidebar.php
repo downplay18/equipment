@@ -6,7 +6,7 @@
         <?php if ($_SESSION['status'] == "KEY") { ?>
             <a href="#addDropdown" class="list-group-item list-group-item-default" data-toggle="collapse" data-parent="#sidebar"><span class="glyphicon glyphicon-triangle-bottom"></span> เพิ่มใบสั่งซื้อ</a>
             <div class="collapse" id="addDropdown">
-                <a href="add.php" class="list-group-item list-group-item-success">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-minus"></span> ปกติ</a>
+                <a href="add.php" class="list-group-item list-group-item-success">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-minus"></span> เบิกซื้อ</a>
                 <a href="add_stock.php" class="list-group-item list-group-item-info">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-minus"></span> เบิกคลัง</a>
                 <a href="add_urgent.php" class="list-group-item list-group-item-warning">&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-minus"></span> เร่งด่วน</a>
             </div>

@@ -63,7 +63,7 @@ if ($_SESSION['status'] != "KEY") {
                 <div class="container-fluid">
 
                     <div class="page-header">
-                        <h2>สั่งซื้อปกติ <small>บันทึกใบสั่งซื้อ(ปกติ)</small></h2>
+                        <h2>เบิกซื้อ <small>บันทึกใบเบิกซื้อ</small></h2>
                     </div>
 
                     <!-- form and submit button -->
