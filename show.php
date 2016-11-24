@@ -17,14 +17,20 @@ unset($_SESSION['owner']);
 
 <?php
 //สร้าง Query Statement สำหรับแสดง ใบสั่งซื้อ(ปกติ)
-$tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
-$tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
 $tmpDivision = "";
+$_SESSION['lastDiv'] = $_POST['divName'];
 
 //ถ้าไม่มี $_POST['divNmae'] คือการเข้ามาครั้งแรก ให้แสดงเฉพาะของกลุ่มงานตัวเอง
-if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกกลุ่มงาน") {
+if (!isset($_POST['divName'])) {
     $tmpDivision = $_SESSION['division'];
-} else { //แสดงทุกกลุ่มงาน
+}
+//ถ้ามีการเลือก divName
+if (isset($_POST['divName'])) {
+    $tmpDivision = $_SESSION['lastDiv'];
+}
+//กด แสดงทุกกลุ่มงาน หรือเลือก แสดงทุกกลุ่มงานจากลิสต์
+if (isset($_POST['allBtn']) || $_POST['divName'] == 'showAll') { //แสดงทุกกลุ่มงาน
+    $_SESSION['lastDiv'] = 'แสดงทุกกลุ่มงาน'; //เคสกดปุ่มแสดงทุกกลุ่มงาน ให้ใน select box เปลี่ยนตามด้วย
     $tmpDivision = '%';
 }
 ?>
@@ -77,7 +83,7 @@ if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกก�
                             <form action="" method="post">
                                 <div class="col-md-3">
                                     <select id="selDiv" class="form-control" name="divName">
-                                        <option value="แสดงทุกกลุ่มงาน">แสดงทุกกลุ่มงาน</option>
+                                        <option value="showAll">แสดงทุกกลุ่มงาน</option>
                                         <?php
                                         //เรียก list กลุ่มงานทั้งหมด
                                         $divQS = "SELECT `listDivision` FROM `list_division` ORDER BY `divisionID` ASC";
@@ -94,7 +100,7 @@ if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกก�
                                                 echo 'selected';
                                             }
                                             ?>>
-                                                <?php echo $rowDiv['listDivision']; ?>
+                                                    <?php echo $rowDiv['listDivision']; ?>
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -102,13 +108,13 @@ if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกก�
 
 
 
-<!--                                    <script type="text/javascript">
-    $(".js-example-basic-multiple").select2();
-</script>
-<select class="js-example-basic-multiple" multiple="multiple">
-    <option value="AL">Alabama</option>
-    <option value="WY">Wyoming</option>
-</select>-->
+    <!--                                    <script type="text/javascript">
+        $(".js-example-basic-multiple").select2();
+    </script>
+    <select class="js-example-basic-multiple" multiple="multiple">
+        <option value="AL">Alabama</option>
+        <option value="WY">Wyoming</option>
+    </select>-->
 
 
 
@@ -118,7 +124,7 @@ if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกก�
                                     <button class="btn btn-success" type="submit" name="submitBtn" value="submit"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
                                 </div>
                                 <div class="col-md-1">
-                                    <button class="btn btn-default" type="submit" name="submitAll" value="-- แยกตามกลุ่มงาน --"><span class="glyphicon glyphicon-list" autofocus></span> แสดงทุกกลุ่มงาน</button>
+                                    <button class="btn btn-default" type="submit" name="allBtn" value="showAll"><span class="glyphicon glyphicon-list" autofocus></span> แสดงทุกกลุ่มงาน</button>
                                 </div>
                             </form>
 
@@ -135,6 +141,9 @@ if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกก�
 
 
                         <?php
+                        $tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
+                        $tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
+                        
                         $divSiteQS = "
 SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
 FROM item
@@ -152,7 +161,7 @@ RIGHT JOIN
     GROUP BY add_detail, aa.owner
 ) AS main
 ON detail = main.add_detail
-AND item.owner = main.owner  
+AND item.owner = main.owner
 ";
                         $divSiteQry = mysqli_query($connection, $divSiteQS);
                         ?>
