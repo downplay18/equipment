@@ -17,69 +17,15 @@ unset($_SESSION['owner']);
 
 <?php
 //สร้าง Query Statement สำหรับแสดง ใบสั่งซื้อ(ปกติ)
-$divSiteQS = "";
-$tableHeader = "";
-$tableData = "";
-$qryMsg = "";
+$tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
+$tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
+$tmpDivision = "";
 
-
-if ($_POST['divName'] == "-- แยกตามกลุ่มงาน --" || empty($_POST['divName']) || isset($_POST['submitAll'])) {
-    //กดปุ่ม แสดงทั้งหมด
-    //echo "SHOW ALL";
-    unset($_SESSION['lastDiv']);
-    unset($_POST['divName']);
-    unset($queryMsg);
-    $divSiteQS = "
-SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
-FROM item
-RIGHT JOIN
-(
-    SELECT add_detail, add_suffix, add_qty, slip_date, aa.owner, slip
-    FROM item_add_record aa
-    WHERE slip_date IN 
-	(
-            SELECT MAX(slip_date)
-            FROM item_add_record ab
-            GROUP BY ab.add_detail, ab.owner
-	) 
-    GROUP BY add_detail, aa.owner
-) AS main
-ON detail = main.add_detail
-AND item.owner = main.owner     
-";
-    $tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
-    $tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
-    $qryMsg = "แสดงทั้งหมด";
-
-
-
-//แสดงเฉพาะที่เลือก    
-} else { 
-    //echo 'SHOW SELECTED';
-    $tmpDivision = $_POST['divName'];
-    $divSiteQS = "
-SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
-FROM item
-RIGHT JOIN
-(
-    SELECT add_detail, add_suffix, add_qty, slip_date, aa.owner, slip
-    FROM item_add_record aa
-    WHERE (aa.add_detail, aa.owner, aa.slip_date) IN 
-	(
-            SELECT ab.add_detail, ab.owner, MAX(slip_date)
-            FROM item_add_record ab
-            WHERE OWNER = '$tmpDivision'
-            GROUP BY ab.add_detail, ab.owner
-	) 
-    GROUP BY add_detail, aa.owner
-) AS main
-ON detail = main.add_detail
-AND item.owner = main.owner  
-";
-    $tableHeader = array("รายการ", "คงเหลือ", "เพิ่มล่าสุด", "เจ้าของ");
-    $tableData = array("add_detail", "quantity", "add_suffix", "slip_date", "add_qty", "owner", "slip");
-    $qryMsg = $_POST['divName'];
-    $_SESSION['lastDiv'] = $_POST['divName'];
+//ถ้าไม่มี $_POST['divNmae'] คือการเข้ามาครั้งแรก ให้แสดงเฉพาะของกลุ่มงานตัวเอง
+if (!isset($_POST['divName']) || $_POST['divName'] != "แสดงทุกกลุ่มงาน") {
+    $tmpDivision = $_SESSION['division'];
+} else { //แสดงทุกกลุ่มงาน
+    $tmpDivision = '%';
 }
 ?>
 
@@ -95,11 +41,9 @@ AND item.owner = main.owner
 
     <body>
         <?php
-        /* navbar */
-        /* ไม่ใช้ case unauthen เพราะไม่มีสิทธิ์เข้าหน้านี้อยู่แล้ว */
         include 'navbar.php';
 
-            /*
+        /*
           echo 'SESSION = ';
           print_r($_SESSION);
           echo '<br/>POST = <br/>';
@@ -107,7 +51,7 @@ AND item.owner = main.owner
           echo '<br/>divSiteQS = <br/>';
           print_r($divSiteQS);
           echo '<br/>tmpDivision = <br/>';
-          print_r($tmpDivision);  */
+          print_r($tmpDivision); */
         ?>
 
         <div class="row">
@@ -122,7 +66,7 @@ AND item.owner = main.owner
                 <div class="container-fluid">
 
                     <div class="page-header">
-                        <h2>สืบค้น <small>ระบบสืบค้นและพิมพ์รายงาน</small></h2>
+                        <h2>สืบค้น <small>ระบบสืบค้น</small></h2>
                     </div>
 
 
@@ -133,7 +77,7 @@ AND item.owner = main.owner
                             <form action="" method="post">
                                 <div class="col-md-3">
                                     <select id="selDiv" class="form-control" name="divName">
-                                        <option>-- แยกตามกลุ่มงาน --</option>
+                                        <option value="แสดงทุกกลุ่มงาน">แสดงทุกกลุ่มงาน</option>
                                         <?php
                                         //เรียก list กลุ่มงานทั้งหมด
                                         $divQS = "SELECT `listDivision` FROM `list_division` ORDER BY `divisionID` ASC";
@@ -142,36 +86,39 @@ AND item.owner = main.owner
                                             ?>
                                             <option 
                                             <?php
-                                            //แยกตามกลุ่มงานล่าสุด
-                                            if ($rowDiv['listDivision'] == $_SESSION['lastDiv']) {
+                                            //ถ้าเข้ามาครั้งแรก (ไม่มี SESSION['lastDiv']) ให้ตั้งกลุ่มงานตัวเองเป็น default
+
+                                            if (empty($_POST['divName']) && ($rowDiv['listDivision'] == $_SESSION['division'])) {
+                                                echo 'selected';
+                                            } elseif ($rowDiv['listDivision'] == $_SESSION['lastDiv']) {
                                                 echo 'selected';
                                             }
                                             ?>>
-                                                    <?php echo $rowDiv['listDivision']; ?>
+                                                <?php echo $rowDiv['listDivision']; ?>
                                             </option>
                                         <?php } ?>
                                     </select>
 
-                                    
-                                    
-                                    
-<!--                                    <script type="text/javascript">
-                                        $(".js-example-basic-multiple").select2();
-                                    </script>
-                                    <select class="js-example-basic-multiple" multiple="multiple">
-                                        <option value="AL">Alabama</option>
-                                        <option value="WY">Wyoming</option>
-                                    </select>-->
 
-                                    
-                                    
-                                    
+
+
+<!--                                    <script type="text/javascript">
+    $(".js-example-basic-multiple").select2();
+</script>
+<select class="js-example-basic-multiple" multiple="multiple">
+    <option value="AL">Alabama</option>
+    <option value="WY">Wyoming</option>
+</select>-->
+
+
+
+
                                 </div> <!-- /.col-md-3 -->
                                 <div class="col-md-1">
                                     <button class="btn btn-success" type="submit" name="submitBtn" value="submit"><span class="glyphicon glyphicon-search"></span> ค้นหา</button>
                                 </div>
                                 <div class="col-md-1">
-                                    <button class="btn btn-default" type="submit" name="submitAll" value="-- แยกตามกลุ่มงาน --"><span class="glyphicon glyphicon-list" autofocus></span> แสดงทั้งหมด</button>
+                                    <button class="btn btn-default" type="submit" name="submitAll" value="-- แยกตามกลุ่มงาน --"><span class="glyphicon glyphicon-list" autofocus></span> แสดงทุกกลุ่มงาน</button>
                                 </div>
                             </form>
 
@@ -188,65 +135,78 @@ AND item.owner = main.owner
 
 
                         <?php
+                        $divSiteQS = "
+SELECT add_detail, quantity, add_suffix, add_qty, slip_date, item.owner, slip
+FROM item
+RIGHT JOIN
+(
+    SELECT add_detail, add_suffix, add_qty, slip_date, aa.owner, slip
+    FROM item_add_record aa
+    WHERE (aa.add_detail, aa.owner, aa.slip_date) IN 
+	(
+            SELECT ab.add_detail, ab.owner, MAX(slip_date)
+            FROM item_add_record ab
+            WHERE OWNER LIKE '$tmpDivision'
+            GROUP BY ab.add_detail, ab.owner
+	) 
+    GROUP BY add_detail, aa.owner
+) AS main
+ON detail = main.add_detail
+AND item.owner = main.owner  
+";
                         $divSiteQry = mysqli_query($connection, $divSiteQS);
-                        $divSiteCount = mysqli_num_rows($divSiteQry);
-                        if ($divSiteCount == 0) { //ค้นแล้วเจอ 0 รายการ
-                            ?>
-                            <div><b>คำค้น: </b><?= $qryMsg; ?> (0 รายการ)</div>
-                        <?php } else { ?>
-                            <div class="col-md-12">
-                                <div><b>คำค้น: </b><?= $qryMsg ?> (<?= $divSiteCount ?> รายการ)</div>
-                                <table id="example" class="table table-bordered table-condensed table-striped table-hover" width="100%" data-display-length='-1'>
-                                    <thead>
-                                        <tr align="center">
-                                            <?php
-                                            foreach ($tableHeader as $value) {
-                                                echo "<th>" . $value . "</th>";
-                                            }
-                                            ?>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
+                        ?>
+                        <div class="col-md-12">
+                            <table id="example" class="table table-bordered table-condensed table-striped table-hover" width="100%" data-display-length='-1'>
+                                <thead>
+                                    <tr align="center">
                                         <?php
-                                        while ($rowDivSite = mysqli_fetch_assoc($divSiteQry)) {
-                                            //"add_detail", "quantity", "add_suffix", "add_date", "add_qty", "adder", "slip"
-                                            ?>
-                                            <tr align="center">
-                                                <td align="left">
-                                                    <a href="show_item.php?detail=<?= $rowDivSite['add_detail'] ?>&owner=<?= $rowDivSite['owner'] ?>&suffix=<?= $rowDivSite['add_suffix'] ?>" target="_blank">
-                                                        <?= $rowDivSite[$tableData[0]] ?>
-                                                    </a>
+                                        foreach ($tableHeader as $value) {
+                                            echo "<th>" . $value . "</th>";
+                                        }
+                                        ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+                                    while ($rowDivSite = mysqli_fetch_assoc($divSiteQry)) {
+                                        //"add_detail", "quantity", "add_suffix", "add_date", "add_qty", "adder", "slip"
+                                        ?>
+                                        <tr align="center">
+                                            <td align="left">
+                                                <a href="show_item.php?detail=<?= $rowDivSite['add_detail'] ?>&owner=<?= $rowDivSite['owner'] ?>&suffix=<?= $rowDivSite['add_suffix'] ?>" target="_blank">
+                                                    <?= $rowDivSite[$tableData[0]] ?>
+                                                </a>
+                                            </td>
+                                            <td nowrap><?= $rowDivSite[$tableData[1]] . ' ' . $rowDivSite[$tableData[2]] ?></td>
+
+
+                                            <!-- ถ้าไม่ได้อัปโหลด slip (index6=="") ไม่ต้องแสดงปุ่ม  -->
+                                            <?php if ($rowDivSite[$tableData[6]] != "") { ?>
+                                                <td align="left"><?=
+                                                    date("d/m/Y", strtotime($rowDivSite[$tableData[3]]))
+                                                    . " <p class='label label-success'>+ " . $rowDivSite[$tableData[4]] . " " . $rowDivSite[$tableData[2]] . "</p>"
+                                                    //. " <a href='" . $root_url . "/" . $rowDivSite[$tableData[6]] . "' class='label label-success' target='_blank'><span class='glyphicon glyphicon-file'></span> ใบเสร็จ</a>"
+                                                    ?>
                                                 </td>
-                                                <td nowrap><?= $rowDivSite[$tableData[1]] . ' ' . $rowDivSite[$tableData[2]] ?></td>
+                                            <?php } else { ?>
+                                                <td align="left"><?=
+                                                    date("d/m/Y", strtotime($rowDivSite[$tableData[3]]))
+                                                    . " <p class='label label-success'>+ " . $rowDivSite[$tableData[4]] . " " . $rowDivSite[$tableData[2]] . "</p>"
+                                                    //. " <a class='label label-danger' target='_blank'><span class='glyphicon glyphicon-remove-sign'></span> ไม่พบใบเสร็จ</a>"
+                                                    ?>
+                                                </td>
+                                            <?php } ?>
 
-                                                
-                                                <!-- ถ้าไม่ได้อัปโหลด slip (index6=="") ไม่ต้องแสดงปุ่ม  -->
-                                                <?php if ($rowDivSite[$tableData[6]] != "") { ?>
-                                                    <td align="left"><?=
-                                                        date("d/m/Y", strtotime($rowDivSite[$tableData[3]]))
-                                                        . " <p class='label label-success'>+ " . $rowDivSite[$tableData[4]] . " " . $rowDivSite[$tableData[2]] . "</p>"
-                                                        //. " <a href='" . $root_url . "/" . $rowDivSite[$tableData[6]] . "' class='label label-success' target='_blank'><span class='glyphicon glyphicon-file'></span> ใบเสร็จ</a>"
-                                                        ?>
-                                                    </td>
-                                                <?php } else { ?>
-                                                    <td align="left"><?=
-                                                        date("d/m/Y", strtotime($rowDivSite[$tableData[3]]))
-                                                        . " <p class='label label-success'>+ " . $rowDivSite[$tableData[4]] . " " . $rowDivSite[$tableData[2]] . "</p>"
-                                                        //. " <a class='label label-danger' target='_blank'><span class='glyphicon glyphicon-remove-sign'></span> ไม่พบใบเสร็จ</a>"
-                                                        ?>
-                                                    </td>
-                                                <?php } ?>
-                                                    
 
-                                                <td><?= $rowDivSite[$tableData[5]] ?></td>
-                                            </tr>
-                                        <?php } ?>
+                                            <td><?= $rowDivSite[$tableData[5]] ?></td>
+                                        </tr>
+                                    <?php } ?>
 
-                                    </tbody>
-                                </table>
-                            </div> <!-- /.col-md-12 -->
-                        <?php } ?>
+                                </tbody>
+                            </table>
+                        </div> <!-- /.col-md-12 -->
 
 
 
