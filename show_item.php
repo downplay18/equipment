@@ -21,8 +21,8 @@ if (isset($_GET['detail'])) {
 if (isset($_POST['showAddBtn'])) {
     $addTakeQS = "SELECT * FROM `item_add_record` WHERE `add_detail` LIKE '" . $_SESSION['detail'] . "'"
             . " AND `owner` LIKE '" . $_SESSION['owner'] . "' ORDER BY add_date DESC"; //มันแค่เช็ค add ใช้แค่ owner ไม่ใช่ division
-    $addTakeHeader = array('รายการ', 'จำนวน', 'วัน/เวลาเพิ่ม', 'ผู้เพิ่ม', 'ใบเสร็จ');
-    $addTakeData = array('add_detail', 'add_qty', 'add_suffix', 'add_date', 'add_time', 'owner', 'slip');
+    $addTakeHeader = array('รายการ', 'จำนวน', 'วันที่ใบเสร็จ', 'ผู้เพิ่ม', 'ใบเสร็จ');
+    $addTakeData = array('add_detail', 'add_qty', 'add_suffix', 'add_date', 'add_time', 'owner', 'slip', 'slip_date');
     $addTakeSize = count($addTakeHeader);
     $addTakeMsg = "รายการเพิ่มทั้งหมด";
 } else { //showTakeBtn as Default
@@ -189,11 +189,13 @@ if (isset($_POST['showAddBtn'])) {
                             <?php
                             if (isset($_POST['showAddBtn'])) {
                                 while ($rowAddTake = mysqli_fetch_assoc($addTakeQry)) {
-                                    if (isset($_POST['showAddBtn'])) { //CASE แสดงรายการเพิ่ม
+                                    //CASE แสดงรายการเพิ่ม
+                                    if (isset($_POST['showAddBtn'])) { 
                                         echo '<tr align="center">';
                                         echo '<td align="left">' . $rowAddTake[$addTakeData[0]] . '</td>';
                                         echo '<td>' . $rowAddTake[$addTakeData[1]] . ' ' . $rowAddTake[$addTakeData[2]] . '</td>';
-                                        echo '<td>' . preg_replace("/(\d+)\D+(\d+)\D+(\d+)/", "$3-$2-$1", $rowAddTake[$addTakeData[3]]) . ' ' . date("H:i", strtotime($rowAddTake[$addTakeData[4]])) . '</td>';
+                                        echo '<td>' . preg_replace("/(\d+)\D+(\d+)\D+(\d+)/", "$3-$2-$1", $rowAddTake[$addTakeData[7]]) . '</td>';
+                                        //echo '<td>' . preg_replace("/(\d+)\D+(\d+)\D+(\d+)/", "$3-$2-$1", $rowAddTake[$addTakeData[3]]) . ' ' . date("H:i", strtotime($rowAddTake[$addTakeData[4]])) . '</td>';
                                         echo '<td>' . $rowAddTake[$addTakeData[5]] . '</td>';
                                         if ($rowAddTake['slip'] != "") {
                                             echo '<td width="1%"><a href="' . $rowAddTake['slip'] . '" target=\'_blank\' "><span class="label label-success"><span class="glyphicon glyphicon-file"></span></span></td>';
@@ -203,7 +205,7 @@ if (isset($_POST['showAddBtn'])) {
                                         echo '</tr>';
                                     }
                                 }
-                            } else {
+                            } else { //CASE แสดงรายการถอน
                                 while ($rowAddTake = mysqli_fetch_assoc($addTakeQry)) {
                                     echo '<tr align="center">';
                                     echo '<td align="left">' . $rowAddTake[$addTakeData[0]] . '</td>';
