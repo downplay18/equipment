@@ -147,7 +147,7 @@ if ($_SESSION['status'] != "KEY") {
                                     <td><input class="form-control" type='number' id='varKID_1' name='varKID[]' required readonly/></td>
                                     <td><input class="form-control" type='text' id='varZDIR_1' name='varZDIR[]' required/></td>
                                     <td><input class="form-control col-md-9" type='text' id='varDetail_1' name='varDetail[]' style="width:100%;" maxlength="100" required readonly/></td>
-                                    <td><input class="form-control" type='text' id='varSlipSuffix_1' name='varSlipSuffix[]' required readonly/> </td>
+                                    <td><input class="form-control" type='text' id='varSlipSuffix_1' name='varSlipSuffix[]' required/> </td>
                                     <td><input class="form-control" type='number' id='varQty_1' name='varQty[]' required/> </td>
                                     <!--
                                     <td><input class="form-control" type='number' id='var_unitPrice_1' name='var_unitPrice[]' required/> </td>
@@ -203,8 +203,8 @@ if ($_SESSION['status'] != "KEY") {
 
                     <div class="container col-md-4">
                         <div class = "alert alert-info">
-                            <b>ขั้นตอนการเพิ่ม:</b>
-                            </br>1. กรอกเลขที่ใบเสร็จ
+                            <b>ขั้นตอนการเพิ่มใบเสร็จเบิกคลัง:</b>
+                            </br>1. ระบุรหัสพัสดุ
                             </br>2. เลือกไฟล์ที่สแกนจากใบเสร็จ เป็นนามสกุล *.pdf, *.jpg, *.jpeg, *.png, *.gif เท่านั้น
                             </br>3. หาก 1 ใบเสร็จมีหลายรายการ ให้กดปุ่ม <kbd>+ Add More</kbd> 
                             </br>4. กรอกรายละเอียดให้ครบทุกช่อง 
@@ -214,12 +214,8 @@ if ($_SESSION['status'] != "KEY") {
 
                     <div class="container col-md-4">
                         <div class = "alert alert-info"> 
-                            <span class = "label label-warning">INFO</span> แปลงหน่วย คือ ใน 1 หน่วย มีกี่ชิ้น<br/>
-                            <span class = "label label-warning">INFO</span> ใส่ค่าให้ครบทุกช่อง<br/>
-                            <span class = "label label-warning">INFO</span> <font color="red">จน./หน่วย</font> คือ จำนวน "ของ" ใน 1 หน่วยใบเสร็จ<br/>
-                            <span class = "label label-warning">INFO</span> ถ้า<font color="blue">หน่วยย่อย</font>ไม่เปลี่ยน ให้ใช้ <font color="red">จำนวนย่อย/หน่วยย่อย</font> เป็น 1<br/>
-                            <span class = "label label-warning">INFO</span> <code>เลขที่ใบเสร็จที่กรอกลงไป</code> และ <code>เลขที่ใบเสร็จบนไฟล์</code> ต้องตรงกัน!<br/>
-                            <span class = "label label-info">INFO</span> ราคาต่อรายการ** หมายถึง ผลรวมราคาของทุกชิ้นในรายการนั้น<br/>
+                            <span class = "label label-warning">INFO</span> แปลงหน่วย คือ ใน 1 หน่วย มีกี่ชิ้น เช่น กระดาษ A4 (1BX) มี (5รีม) ให้ใส่แปลงหน่วยเป็น 5 แต่ถ้าหน่วย เป็น RM อยู่แล้ว ให้ใส่แปลงหน่วยเป็น 1<br/>
+                            <span class = "label label-warning">INFO</span> ถ้า<font color="blue">หน่วย</font>ไม่เปลี่ยน ให้ใช้ <font color="red">หน่วยย่อย</font> เป็น 1<br/>
                         </div> 
                     </div>
 

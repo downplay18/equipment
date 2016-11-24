@@ -17,7 +17,7 @@ $(".addmore").on('click', function () {
     data += "<td><input class='form-control' type='number' id='varKID_" + i + "' name='varKID[]' required readonly/></td>\n\
 <td><input class='form-control' type='text' id='varZDIR_" + i + "' name='varZDIR[]' required/></td>\n\
 <td><input class='form-control' type='text' id='varDetail_" + i + "' name='varDetail[]' maxlength=\"100\" required readonly/></td> \n\
-<td><input class='form-control' type='text' id='varSlipSuffix_" + i + "' name='varSlipSuffix[]' required readonly/></td> \n\
+<td><input class='form-control' type='text' id='varSlipSuffix_" + i + "' name='varSlipSuffix[]' required/></td> \n\
 <td><input class='form-control' type='number' id='varQty_" + i + "' name='varQty[]' required/></td> \n\
 <td bgcolor='#ffffe6'><input class='form-control' type='text' id='varLastSuffix_" + i + "' name='varLastSuffix[]' required readonly/></td>\n\
 <td bgcolor='#ffffe6'><input class='form-control' type='number' id='varLastQty_" + i + "' name='varLastQty[]' required/></td></tr>";
