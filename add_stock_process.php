@@ -189,7 +189,7 @@ $fullStatement .= "COMMIT;";
 
 //$item_add จะพิเศษหน่อยตรงที่ มันมี detail เป็น key ทำให้เวลา INSERT INTO ที่เป็ฯ statement ใหญ่ๆ ถ้ามีบางตัวที่ซํ้า มันจะทำให้ตัวอื่นที่ไม่ซํ้า error ไปหมด
 
-$fullQry = mysqli_multi_query($connection, $fullStatement) or die("<br/>add_confirm.php/fullStatement FAIL" . mysqli_error($connection));
+//$fullQry = mysqli_multi_query($connection, $fullStatement) or die("<br/>add_confirm.php/fullStatement FAIL" . mysqli_error($connection));
 
 
 if ($fullQry) {
@@ -223,7 +223,7 @@ if ($uploadOk == 1 && move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $t
 </div>
 
 <?php 
-    header("Location: $root_url/add_stock.php", true, 302);
+    //header("Location: $root_url/add_stock.php", true, 302);
 ?>
 
 <?php 

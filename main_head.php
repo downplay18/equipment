@@ -11,7 +11,7 @@
 <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" >
 
 <!-- สำหรับautocomplete ของ add.php -->
-<link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
+<!--<link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>-->
 
 <!-- datatables -->
 <!-- <link href="css/datatables/extensions/Buttons/css/buttons.bootstrap.min.css" rel="stylesheet" type="text/css"/> -->
@@ -29,5 +29,5 @@
 <link href="css/style.css" rel="stylesheet" type="text/css">     
 
 <!-- Chosen -->
-<link href="css/chosen.bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<!--<link href="css/chosen.bootstrap.min.css" rel="stylesheet" type="text/css"/>-->
  

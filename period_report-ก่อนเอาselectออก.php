@@ -58,9 +58,9 @@ if (isset($_POST['submitBtn'])) {
 } else {
     $_SESSION['startDate'] = date("d/m/Y");
     $_SESSION['endDate'] = date("d/m/Y");
-//    if (isset($_POST['resetBtn'])) {
-//        $_SESSION['lastDiv'] = "-- แยกตามกลุ่มงาน --";
-//    }
+    if (isset($_POST['resetBtn'])) {
+        $_SESSION['lastDiv'] = "-- แยกตามกลุ่มงาน --";
+    }
 }
 
 $daterange[0] = str_replace("/", "-", $daterange[0]);
@@ -327,11 +327,11 @@ array_push($allDetailHeader, "รวมจ่าย", "คงเหลือ", "
 
 
 
-                            <!--
+
                             <div class="col-md-3">
                                 <select id="selDiv" class="form-control" name="singleDivName">
                                     <option value="%">-- แยกตามกลุ่มงาน --</option>
-                                    <?php /*
+                                    <?php
                                     //เรียก list กลุ่มงานทั้งหมด
                                     $divQS = "SELECT `listDivision` FROM `list_division` ORDER BY `divisionID` ASC";
                                     $divQry = mysqli_query($connection, $divQS);
@@ -346,7 +346,7 @@ array_push($allDetailHeader, "รวมจ่าย", "คงเหลือ", "
                                         ?>>
                                         <?php echo $rowDiv['listDivision']; ?>
                                         </option>
-<?php } */?>
+<?php } ?>
                                 </select>
                             </div> <!-- /.col-md-3 -->
 
@@ -368,68 +368,12 @@ array_push($allDetailHeader, "รวมจ่าย", "คงเหลือ", "
                     <div class="col-md-12">
                         <b>คำค้น: </b> 
                         <?php
-                        
                         if(isset($_GET['mainAll']) || isset($_POST['resetBtn'])) {
-                            echo "ทุกกลุ่มงาน ";
-                        } else {
-                            if(isset($_GET['main1'])) {
-                                echo "กพทถ-ห. และกลุ่มงานในสังกัดส่วนกลางกองฯ, ";
-                            }
-                            if(isset($_GET['sub6'])) {
-                                echo "sub6, ";
-                            }
-                            if(isset($_GET['sub7'])) {
-                                echo "sub7, ";
-                            }
-                            if(isset($_GET['sub8'])) {
-                                echo "sub8, ";
-                            }
-                            if(isset($_GET['sub9'])) {
-                                echo "sub9, ";
-                            }
-                            if(isset($_GET['sub10'])) {
-                                echo "sub10, ";
-                            }
-                            if(isset($_GET['sub11'])) {
-                                echo "sub11, ";
-                            }
-                            if(isset($_GET['sub12'])) {
-                                echo "sub12, ";
-                            }
-                            if(isset($_GET['sub13'])) {
-                                echo "sub13, ";
-                            }
-                            if(isset($_GET['main2'])) {
-                                echo "หพทถ-ห., ";
-                            }
-                            if(isset($_GET['main3'])) {
-                                echo "หพทม-ห., ";
-                            }
-                            if(isset($_GET['main4'])) {
-                                echo "หพทค-ห., ";
-                            }
-                            if(isset($_GET['main5'])) {
-                                echo "หบฝม-ห. และกลุ่มงานในสังกัด, ";
-                            }
-                            if(isset($_GET['sub14'])) {
-                                echo "sub14, ";
-                            }
-                            if(isset($_GET['sub15'])) {
-                                echo "sub15, ";
-                            }
-                            if(isset($_GET['sub16'])) {
-                                echo "sub16, ";
-                            }
-                            if(isset($_GET['sub17'])) {
-                                echo "sub17, ";
-                            }
-                            if(isset($_GET['sub18'])) {
-                                echo "sub18, ";
-                            }
-                            if(isset($_GET['sub19'])) {
-                                echo "sub19, ";
-                            }
+                            echo "ทุกกลุ่มงาน";
                         }
+                            foreach($selectDiv as $data) {
+                                echo $data . ", ";
+                            }
                         ?>
                     </div>
 

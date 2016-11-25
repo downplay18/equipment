@@ -1,9 +1,12 @@
 
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
 <script src="js/jquery-1.12.3.js" type="text/javascript"></script>
 <script src="js/bootstrap.min.js"></script>
 
+    <!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>-->
+
 <!-- สำหรับautocomplete ของ add.php -->
-<script src="js/jquery-ui.min.js" type="text/javascript"></script>
+<!--<script src="js/jquery-ui.min.js" type="text/javascript"></script>-->
 
 <!-- <script src="//code.jquery.com/jquery-1.12.3.js" type="text/javascript"></script> -->
 <script src="datatables/jquery.dataTables.min.js" type="text/javascript"></script> <!-- 1.10.12 -->
@@ -20,3 +23,5 @@
 
 <!-- Chosen -->
 <script src="js/chosen.jquery.js" type="text/javascript"></script>
+
+

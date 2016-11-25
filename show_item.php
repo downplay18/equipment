@@ -47,7 +47,7 @@ if (isset($_POST['showAddBtn'])) {
         <title>ADMIN</title>
         <!-- Bootstrap Core CSS -->
         <?php include 'main_head.php'; ?>
-
+        <link href="bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body>
@@ -56,12 +56,12 @@ if (isset($_POST['showAddBtn'])) {
         /* ไม่ใช้ case unauthen เพราะไม่มีสิทธิ์เข้าหน้านี้อยู่แล้ว */
         include 'navbar.php';
         /*
-        echo 'SESSION = ';
-        print_r($_SESSION);
-        echo '<br/>POST = <br/>';
-        print_r($_POST);
-        echo '<br/>addTakeQS = <br/>';
-        print_r($addTakeQS); */
+          echo 'SESSION = ';
+          print_r($_SESSION);
+          echo '<br/>POST = <br/>';
+          print_r($_POST);
+          echo '<br/>addTakeQS = <br/>';
+          print_r($addTakeQS); */
         ?>
 
         <div class="row">
@@ -98,9 +98,9 @@ if (isset($_POST['showAddBtn'])) {
                         $itemQry = mysqli_query($connection, $itemQS) or die("itemQry failed: " . mysqli_error($connection));
                         $itemResult = mysqli_fetch_assoc($itemQry);
                         ?>
-                        <label class="col-md-2 control-label">ลงบันทึกเบิก: </label>
+                        <label class="col-md-1 control-label">ลงบันทึกเบิก: </label>
                         <div class="form-group">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="qty" placeholder="ต้องการเบิกจำนวน" style="size: 10px" required="">
                                     <div class="input-group-addon">จากคงเหลือ(<?= $itemResult['quantity'] . " " . $itemResult['suffix'] . ")" ?></div>
@@ -141,17 +141,32 @@ if (isset($_POST['showAddBtn'])) {
                                     </select>
                                 </div>
                             </div>
+
+
+                            <div class="col-md-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <input id="datetimepicker" class="pull-right" type="text" name="takeDate" 
+                                           style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" 
+                                           autocomplete="off">
+                                </div>
+                            </div>
+
+
                             <div class="col-md-1">
                                 <button type="submit" class="btn btn-danger singleSubmitBtn" name="takeSubmit" value="Submit"><span class="glyphicon glyphicon-minus-sign"></span> ลงบันทึกเบิก</button>
                             </div>
+
+
                             <div class="col-md-1">
                                 <?php
                                 foreach ($_SESSION['takeMsg'] as $val) {
-                                    echo "<font color='red'>" . $val . "</font><br/>";
+                                    echo $val . "<br/>";
                                     unset($_SESSION['takeMsg']);
                                 }
                                 ?>
                             </div>
+
                         </div>
                     </form> <!-- /.form-horizontal -->
                 <?php } ?>
@@ -190,7 +205,7 @@ if (isset($_POST['showAddBtn'])) {
                             if (isset($_POST['showAddBtn'])) {
                                 while ($rowAddTake = mysqli_fetch_assoc($addTakeQry)) {
                                     //CASE แสดงรายการเพิ่ม
-                                    if (isset($_POST['showAddBtn'])) { 
+                                    if (isset($_POST['showAddBtn'])) {
                                         echo '<tr align="center">';
                                         echo '<td align="left">' . $rowAddTake[$addTakeData[0]] . '</td>';
                                         echo '<td>' . $rowAddTake[$addTakeData[1]] . ' ' . $rowAddTake[$addTakeData[2]] . '</td>';
@@ -200,7 +215,7 @@ if (isset($_POST['showAddBtn'])) {
                                         if ($rowAddTake['slip'] != "") {
                                             echo '<td width="1%"><a href="' . $rowAddTake['slip'] . '" target=\'_blank\' "><span class="label label-success"><span class="glyphicon glyphicon-file"></span></span></td>';
                                         } else {
-                                            echo '<td width="1%"><a href="add_record_edit.php?add_id='. $rowAddTake['add_id'] .'" target=\'_blank\' "><span class="label label-danger"><span class="glyphicon glyphicon-edit"></span></span></td>';
+                                            echo '<td width="1%"><a href="add_record_edit.php?add_id=' . $rowAddTake['add_id'] . '" target=\'_blank\' "><span class="label label-danger"><span class="glyphicon glyphicon-edit"></span></span></td>';
                                         }
                                         echo '</tr>';
                                     }
@@ -225,6 +240,46 @@ if (isset($_POST['showAddBtn'])) {
         </div> <!-- /.row -->
 
         <?php include 'main_script.php'; ?>
+        <script src="bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
+        <script src="bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+
+            function cb(start, end) {
+                $('#datetimepicker span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+            }
+
+            $('#datetimepicker').daterangepicker({
+                "singleDatePicker": true,
+                "locale": {
+                    "format": "DD/MM/YYYY",
+                    "daysOfWeek": [
+                        "อ.",
+                        "จ.",
+                        "อ.",
+                        "พ.",
+                        "พฤ.",
+                        "ศ.",
+                        "ส."
+                    ],
+                    "monthNames": [
+                        "มกราคม",
+                        "กุมภาพันธ์",
+                        "มีนาคม",
+                        "เมษายน",
+                        "พฤษภาคม",
+                        "มิถุนายน",
+                        "กรกฎาคม",
+                        "สิงหาคม",
+                        "กันยายน",
+                        "ตุลาคม",
+                        "พฤศจิกายน",
+                        "ธันวาคม"
+                    ]
+                },
+            }
+            , cb);
+        </script>
 
         <script> /*PREVENT DOUBLE SUBMIT: ทำให้ปุ่ม submit กดได้ครั้งเดียว ป้องกับปัญหาเนต lag แล้ว user กดเบิ้ล มันจะทำให้ส่งค่า 2 เท่า */
             $(document).ready(function () {

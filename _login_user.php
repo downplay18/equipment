@@ -22,13 +22,10 @@ include("fusioncharts.php");
     <head>
 
         <title>ADMIN</title>
-        <!-- Bootstrap Core CSS -->
         <?php include 'main_head.php'; ?>
         <script src="fusioncharts/fusioncharts-suite-xt/js/fusioncharts.js" type="text/javascript"></script>
         <script src="fusioncharts/fusioncharts-suite-xt/js/fusioncharts.charts.js" type="text/javascript"></script>
         <script src="fusioncharts/fusioncharts-suite-xt/js/themes/fusioncharts.theme.zune.js" type="text/javascript"></script>
-
-        <!--</head>-->
 
     <body>
         <?php
@@ -52,10 +49,11 @@ include("fusioncharts.php");
 
                 <div class="container-fluid">
 
-                    <h4 align="center">รายการที่สนใจ
+                    <h3 align="center">เลือกรายการพัสดุ
                         <a class="btn btn-info btn-sm" href="user_select_fav.php" target="" role="button"><span class="glyphicon glyphicon-edit"></span></a>
-                    </h4>
-                    
+                    </h3>
+                    <h4 align="center">กราฟสรุปยอดคงเหลือของพัสดุ</h4>
+
                     <?php
                     //ดึงรายการโปรดมาแสดง
                     $favShowQS = "SELECT iid, detail, suffix, quantity, IFNULL(qty_alert,0) AS qty_alert, owner"
@@ -251,7 +249,6 @@ include("fusioncharts.php");
                         } else {
                             echo '<div class="alert alert-info">';
                         }
-                        
                         ?>
 
                         <?php
@@ -274,12 +271,12 @@ include("fusioncharts.php");
 
                         <?php
                         /*
-                        echo "<pre>";
-                        print_r($array);
-                        //print_r($add6QS);
-                        echo "</pre>";
-                        */
-                        
+                          echo "<pre>";
+                          print_r($array);
+                          //print_r($add6QS);
+                          echo "</pre>";
+                         */
+
                         //ทำเดือนไทยใส่ใน $array['label?'][3]
                         ?>
 

@@ -5,11 +5,11 @@ session_start();
 //error_reporting(0);
 require_once 'connection.php';
 include 'root_url.php';
-/*
+
   echo 'SESSION = ';
   print_r($_SESSION);
   echo '<br/>POST = <br/>';
-  print_r($_POST); */
+  print_r($_POST); 
 
 $_SESSION['lastTakeWorker'] = $_POST['worker'];
 $_SESSION['lastTakeSite'] = $_POST['site'];
@@ -22,6 +22,11 @@ $_SESSION['takeMsg'] = array();
   } else {
   echo 'takSubmit  failed';
   } */
+?>
+
+<?php
+//ทำวันที่ให้เป็น db format
+$takeDate = preg_replace("/(\d+)\D+(\d+)\D+(\d+)/","$3-$2-$1",$_POST['takeDate']);
 ?>
 
 <?php
@@ -46,31 +51,30 @@ if ($_POST['worker'] == "-- เลือกผู้ใช้ --" || $_POST['sit
     $itemTakeQS = "INSERT INTO `item` (`iid`,`quantity`) VALUES ('" . $itemResult['iid'] . "','" . $itemResult['quantity'] . "') ON DUPLICATE KEY UPDATE `quantity`=`quantity`-" . $_POST['qty'] . ";";
     $itemTakeQry = mysqli_query($connection, $itemTakeQS) or die("itemTakeQS failed: " . mysqli_error($connection));
     if ($itemQry) {
-        array_push($_SESSION['takeMsg'], "ตัดของจาก:item ...OK!");
+        array_push($_SESSION['takeMsg'], "<span style='color:blue;>ตัดของจาก:item ...OK!</span>");
     } else {
-        array_push($_SESSION['takeMsg'], "รายการเบิกไม่สำเร็จ ไม่มีการบันทึก");
+        array_push($_SESSION['takeMsg'], "<span style='color:blue;>รายการเบิกไม่สำเร็จ ไม่มีการบันทึก</span>");
     }
 
     //เพิ่มรายการใน `item_take_record`
     date_default_timezone_set("Asia/Bangkok");
     $itemTakeRecordQS = "INSERT INTO `item_take_record` (`take_detail`,`take_qty`,`take_suffix`,`take_date`,`take_time`,`taker`,`worker`,`site`)"
             . " VALUES ('" . $_SESSION['detail'] . "','" . $_POST['qty'] . "','" . $_SESSION['suffix'] . "'"
-            . ",'" . date('Y-m-d') . "','" . date('H:i:s') . "'"
+            . ",'" . $takeDate . "','" . date('H:i:s') . "'"
             . ",'" . $_SESSION['division'] . "','" . $_POST['worker'] . "','" . $_POST['site'] . "')";
     $itemTakeRecordQry = mysqli_query($connection, $itemTakeRecordQS) or die("itemTakeRecordQry failed: " . mysqli_error($connection));
     if ($itemQry) {
-        array_push($_SESSION['takeMsg'], "เพิ่มใน:record ...OK!");
+        array_push($_SESSION['takeMsg'], "<span style='color:blue;>เพิ่มใน:record ...OK!</span>");
     }
 
 
-
-    /*
+    
       echo "<br>userCfgUpdQS=<br>";
       print_r($userCfgUpdQS);
       echo "<br>itemTakeRecordQS=<br>";
       print_r($itemTakeRecordQS);
       echo "<br>itemTakeQS=<br>";
-      print_r($itemTakeQS); */
+      print_r($itemTakeQS); 
 
 
     header("Location: $root_url/show_item.php", true, 302);

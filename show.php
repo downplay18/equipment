@@ -41,8 +41,6 @@ if (isset($_POST['allBtn']) || $_POST['divName'] == 'showAll') { //แสดง�
         <title>ADMIN</title>
         <!-- Bootstrap Core CSS -->
         <?php include 'main_head.php'; ?>
-        <link href="select2/dist/css/select2.min.css" rel="stylesheet" type="text/css"/>
-        <script src="select2/dist/js/select2.min.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -104,18 +102,6 @@ if (isset($_POST['allBtn']) || $_POST['divName'] == 'showAll') { //แสดง�
                                             </option>
                                         <?php } ?>
                                     </select>
-
-
-
-
-    <!--                                    <script type="text/javascript">
-        $(".js-example-basic-multiple").select2();
-    </script>
-    <select class="js-example-basic-multiple" multiple="multiple">
-        <option value="AL">Alabama</option>
-        <option value="WY">Wyoming</option>
-    </select>-->
-
 
 
 
